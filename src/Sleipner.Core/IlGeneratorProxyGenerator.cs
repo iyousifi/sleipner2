@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -11,6 +13,7 @@ namespace Sleipner.Core
     {
         private static readonly AssemblyBuilder AssemblyBuilder;
         private static readonly ModuleBuilder ModuleBuilder;
+        private static readonly IDictionary<Type, Type> _typeCache = new ConcurrentDictionary<Type, Type>();
 
         static IlGeneratorProxyGenerator()
         {
@@ -25,6 +28,19 @@ namespace Sleipner.Core
         }
 
         public static Type CreateProxyFor<TInterface>() where TInterface : class
+        {
+            var interfaceType = typeof(TInterface);
+            Type proxyDelegatorType;
+            if (!_typeCache.TryGetValue(interfaceType, out proxyDelegatorType))
+            {
+                proxyDelegatorType = EmitProxyFor<TInterface>();
+                _typeCache[interfaceType] = proxyDelegatorType;
+            }
+
+            return proxyDelegatorType;
+        }
+
+        private static Type EmitProxyFor<TInterface>() where TInterface : class
         {
             var interfaceType = typeof(TInterface);
             var proxyBuilder = ModuleBuilder.DefineType("Proxies." + interfaceType.FullName + "__sleipner_proxy", TypeAttributes.Class | TypeAttributes.Public, null, new[] { interfaceType });
