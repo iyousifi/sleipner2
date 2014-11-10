@@ -17,11 +17,11 @@ namespace Sleipner.Core
             var currentDomain = AppDomain.CurrentDomain;
             var dynamicAssemblyName = new AssemblyName
             {
-                Name = "SleipnerCacheProxies",
+                Name = "Sleipner2CacheProxies",
             };
 
             AssemblyBuilder = currentDomain.DefineDynamicAssembly(dynamicAssemblyName, AssemblyBuilderAccess.RunAndSave);
-            ModuleBuilder = AssemblyBuilder.DefineDynamicModule("SleipnerCacheProxies", "SleipnerCacheProxies.dll");
+            ModuleBuilder = AssemblyBuilder.DefineDynamicModule("Sleipner2CacheProxies", "Sleipner2CacheProxies.dll");
         }
 
         public static Type CreateProxyFor<TInterface>() where TInterface : class
@@ -175,7 +175,7 @@ namespace Sleipner.Core
             }
 
             var createdType = proxyBuilder.CreateType();
-            //AssemblyBuilder.Save("SleipnerCacheProxies.dll");
+            //AssemblyBuilder.Save("Sleipner2CacheProxies.dll");
             return createdType;
         }
     }
