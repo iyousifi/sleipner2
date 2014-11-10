@@ -18,7 +18,6 @@
 *.tlb
 *.tlh
 *.bak
-*.[Cc]ache
 *.ilk
 *.log
 *.lib
@@ -31,7 +30,6 @@ ipch/
 obj/
 [Bb]in
 [Dd]ebug*/
-!src/DR.UserInput.Commentary.Services.Web/Views/Debug
 [Rr]elease*/
 [Tt]estResults*/
 TDD*/
@@ -54,10 +52,3 @@ StyleCop.*
 #Sublime Text 2
 *.sublime-project
 *.sublime-workspace
-
-#Build output
-Deploy/
-
-#Less build output
-src/DR.Magazines.News.Web/Content/styles/*.css
-

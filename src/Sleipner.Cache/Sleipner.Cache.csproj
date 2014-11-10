@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B9381A2D-20E3-4EE5-9748-47E145550154}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Sleipner.Cache</RootNamespace>
+    <AssemblyName>Sleipner.Cache</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Nito.AsyncEx">
+      <HintPath>..\packages\Nito.AsyncEx.3.0.0\lib\net45\Nito.AsyncEx.dll</HintPath>
+    </Reference>
+    <Reference Include="Nito.AsyncEx.Concurrent">
+      <HintPath>..\packages\Nito.AsyncEx.3.0.0\lib\net45\Nito.AsyncEx.Concurrent.dll</HintPath>
+    </Reference>
+    <Reference Include="Nito.AsyncEx.Enlightenment">
+      <HintPath>..\packages\Nito.AsyncEx.3.0.0\lib\net45\Nito.AsyncEx.Enlightenment.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="LookupHandlers\AsyncLookupHandler.cs" />
+    <Compile Include="LookupHandlers\LookupHandler.cs" />
+    <Compile Include="LookupHandlers\RequestKey.cs" />
+    <Compile Include="LookupHandlers\Syncronizer.cs" />
+    <Compile Include="Model\CachedObject.cs" />
+    <Compile Include="Model\CachedObjectState.cs" />
+    <Compile Include="Policies\BasicCachePolicyProvider.cs" />
+    <Compile Include="Policies\CachePolicy.cs" />
+    <Compile Include="Configuration\Expressions\ExpressionConfigExtensions.cs" />
+    <Compile Include="Configuration\Expressions\ExpressionConfiguredMethod.cs" />
+    <Compile Include="Configuration\IMethodFamilyConfigurationExpression.cs" />
+    <Compile Include="Configuration\MethodFamilyConfigExpression.cs" />
+    <Compile Include="Configuration\Param.cs" />
+    <Compile Include="Configuration\Parsers\AnyValueParser.cs" />
+    <Compile Include="Configuration\Parsers\BetweenParser.cs" />
+    <Compile Include="Configuration\Parsers\ConstantParser.cs" />
+    <Compile Include="Configuration\Parsers\IParameterParser.cs" />
+    <Compile Include="Policies\ICachePolicyProvider.cs" />
+    <Compile Include="ICacheProvider.cs" />
+    <Compile Include="Policies\IConfiguredMethod.cs" />
+    <Compile Include="SleipnerCache.cs" />
+    <Compile Include="SleipnerCacheProxyHandler.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Sleipner.Core\Sleipner.Core.csproj">
+      <Project>{a7f6cd6f-df11-40b9-b4c3-1341fce4ae4d}</Project>
+      <Name>Sleipner.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
