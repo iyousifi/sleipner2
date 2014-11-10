@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -29,10 +30,11 @@ namespace Sleipner.Core.Util
             return (TResult)delegateMethod(implementation, Parameters);
         }
 
-        public async Task<TResult> InvokeAsync(T implementation)
+        public Task<TResult> InvokeAsync(T implementation)
         {
             var delegateMethod = GetLateBoundMethod(Method);
-            return (TResult)delegateMethod(implementation, Parameters);
+            var r = delegateMethod(implementation, Parameters);
+            return (Task<TResult>) r;
         }
 
         private DelegateFactory.LateBoundMethod GetLateBoundMethod(MethodInfo methodInfo)
@@ -70,5 +72,22 @@ namespace Sleipner.Core.Util
             if (obj.GetType() != this.GetType()) return false;
             return Equals((ProxiedMethodInvocation<T, TResult>)obj);
         }
+    }
+
+    public class ProxiedMethodInvocationGenerator<T> where T : class
+    {
+        public static ProxiedMethodInvocation<T, TResult> FromExpression<TResult>(Expression<Func<T, TResult>> expression)
+        {
+            var methodInfo = SymbolExtensions.GetMethodInfo(expression);
+            var parameters = SymbolExtensions.GetParameter(expression);
+            return new ProxiedMethodInvocation<T, TResult>(methodInfo, parameters);
+        }
+
+        public static ProxiedMethodInvocation<T, TResult> FromExpression<TResult>(Expression<Func<T, Task<TResult>>> expression)
+        {
+            var methodInfo = SymbolExtensions.GetMethodInfo(expression);
+            var parameters = SymbolExtensions.GetParameter(expression);
+            return new ProxiedMethodInvocation<T, TResult>(methodInfo, parameters);
+        } 
     }
 }

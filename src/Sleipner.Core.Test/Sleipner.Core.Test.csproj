@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A7F6CD6F-DF11-40B9-B4C3-1341FCE4AE4D}</ProjectGuid>
+    <ProjectGuid>{2C4B73E8-D168-4DD5-B9B4-2A074A13602E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Sleipner.Core</RootNamespace>
-    <AssemblyName>Sleipner.Core</AssemblyName>
+    <RootNamespace>Sleipner.Core.Test</RootNamespace>
+    <AssemblyName>Sleipner.Core.Test</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,6 +30,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Moq">
+      <HintPath>..\packages\Moq.4.2.1409.1722\lib\net40\Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -39,13 +45,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Util\CollectionComparer.cs" />
-    <Compile Include="Util\DelegateFactory.cs" />
-    <Compile Include="IlGeneratorProxyGenerator.cs" />
-    <Compile Include="IProxyHandler.cs" />
-    <Compile Include="Util\ProxiedMethodInvocation.cs" />
-    <Compile Include="SleipnerProxy.cs" />
+    <Compile Include="Model\ITestInterface.cs" />
+    <Compile Include="SleipnerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Sleipner.Core\Sleipner.Core.csproj">
+      <Project>{a7f6cd6f-df11-40b9-b4c3-1341fce4ae4d}</Project>
+      <Name>Sleipner.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
