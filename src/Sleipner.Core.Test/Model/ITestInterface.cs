@@ -12,7 +12,7 @@ namespace Sleipner.Core.Test.Model
         int AddNumbers(int a, int b);
         Task<int> AddNumbersAsync(int a, int b);
 
-        T GetStuff<T>(T bla);
-        Task<T> GetStuffAsync<T>(T bla);
+        T GetStuff<T>(T bla) where T : class;
+        Task<T> GetStuffAsync<T>(T bla) where T : class;
     }
 }

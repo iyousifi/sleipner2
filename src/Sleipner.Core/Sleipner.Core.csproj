@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SleipnerGenericParameterMustBeReferenceException.cs" />
     <Compile Include="Util\CollectionComparer.cs" />
     <Compile Include="Util\DelegateFactory.cs" />
     <Compile Include="IlGeneratorProxyGenerator.cs" />

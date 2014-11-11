@@ -82,6 +82,13 @@ namespace Sleipner.Core
                 if (method.IsGenericMethod)
                 {
                     var genericTypes = method.GetGenericArguments();
+                    foreach (var type in genericTypes)
+                    {
+                        var isReferenceConstrainted = type.GenericParameterAttributes.HasFlag(GenericParameterAttributes.ReferenceTypeConstraint);
+                        if (!isReferenceConstrainted)
+                            throw new SleipnerGenericParameterMustBeReferenceException(method, type);   
+                    }
+
                     proxyMethod.DefineGenericParameters(genericTypes.Select(a => a.Name).ToArray());
                 }
 
@@ -150,7 +157,7 @@ namespace Sleipner.Core
                     methodBody.Emit(OpCodes.Ldc_I4, i);                     //Push array index index
                     methodBody.Emit(OpCodes.Ldarg, i + 1);                  //Push array index value
 
-                    if (parameterType.IsValueType)
+                    if (parameterType.IsValueType)                          //TODO: Some day, see if we can make this determined at runtime
                     {
                         methodBody.Emit(OpCodes.Box, parameterType);        //Value types need to be boxed
                     }

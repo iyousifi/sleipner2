@@ -14,14 +14,7 @@ namespace Sleipner.Core.TestConsole
             var sleipnerProxy = new SleipnerProxy<ITestInterface>(new TestImplementation());
             var kk = sleipnerProxy.WrapWith(new Handler());
 
-            kk.GetStuff("roflmao");
-        }
-
-        static T Bla<T>(T blaa)
-        {
-            var kka = typeof(ITestInterface).GetMethods()[0].MakeGenericMethod(typeof(T));
-
-            return default(T);
+            kk.GetStuff("sdss");
         }
     }
 
@@ -40,12 +33,12 @@ namespace Sleipner.Core.TestConsole
 
     public interface ITestInterface
     {
-        T GetStuff<T>(T bla);
+        T GetStuff<T>(T bla) where T : class;
     }
 
     public class TestImplementation : ITestInterface
     {
-        public T GetStuff<T>(T bla)
+        public T GetStuff<T>(T bla) where T : class
         {
             return bla;
         }
