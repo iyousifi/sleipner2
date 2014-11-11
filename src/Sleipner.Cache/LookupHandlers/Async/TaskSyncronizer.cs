@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace Sleipner.Cache.LookupHandlers
+namespace Sleipner.Cache.LookupHandlers.Async
 {
-    public class Syncronizer
+    public class TaskSyncronizer
     {
         private readonly IDictionary<RequestKey, object> _waitHandles = new ConcurrentDictionary<RequestKey, object>();
 

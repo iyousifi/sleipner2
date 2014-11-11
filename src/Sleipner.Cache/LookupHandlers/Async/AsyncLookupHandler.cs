@@ -1,34 +1,31 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Sleipner.Cache.Model;
 using Sleipner.Cache.Policies;
 using Sleipner.Core.Util;
 
-namespace Sleipner.Cache.LookupHandlers
+namespace Sleipner.Cache.LookupHandlers.Async
 {
     public class AsyncLookupHandler<T> where T : class
     {
         private readonly T _implementation;
         private readonly ICachePolicyProvider<T> _cachePolicyProvider;
         private readonly ICacheProvider<T> _cache;
-        private readonly Syncronizer _syncronizer;
+        private readonly TaskSyncronizer _taskSyncronizer;
 
         public AsyncLookupHandler(T implementation, ICachePolicyProvider<T> cachePolicyProvider, ICacheProvider<T> cache)
         {
             _implementation = implementation;
             _cachePolicyProvider = cachePolicyProvider;
             _cache = cache;
-            _syncronizer = new Syncronizer();
+            _taskSyncronizer = new TaskSyncronizer();
         }
 
         public async Task<TResult> LookupAsync<TResult>(ProxiedMethodInvocation<T, TResult> methodInvocation)
         {
             var cachePolicy = _cachePolicyProvider.GetPolicy(methodInvocation.Method, methodInvocation.Parameters);
 
-            if (cachePolicy == null || cachePolicy.CacheDuration == 0)
+            if (cachePolicy == null || cachePolicy.CacheDuration <= 0)
             {
                 return await methodInvocation.InvokeAsync(_implementation);
             }
@@ -47,7 +44,7 @@ namespace Sleipner.Cache.LookupHandlers
 
             var requestKey = new RequestKey(methodInvocation.Method, methodInvocation.Parameters);
             Task<TResult> awaitableTask;
-            if (_syncronizer.TryGetAwaitable(requestKey, () => methodInvocation.InvokeAsync(_implementation), out awaitableTask))
+            if (_taskSyncronizer.TryGetAwaitable(requestKey, () => methodInvocation.InvokeAsync(_implementation), out awaitableTask))
             {
                 if (cachedItem.State == CachedObjectState.Stale)
                     return cachedItem.Object;
@@ -72,14 +69,21 @@ namespace Sleipner.Cache.LookupHandlers
                             thrownException = e;
                         }
 
-                        if (thrownException != null && cachePolicy.BubbleExceptions)
+                        if (thrownException != null)
                         {
-                            await _cache.StoreExceptionAsync(methodInvocation, cachePolicy, thrownException);
+                            if (cachePolicy.BubbleExceptions)
+                            {
+                                await _cache.StoreExceptionAsync(methodInvocation, cachePolicy, thrownException);
+                            }
+                            else
+                            {
+                                await _cache.StoreAsync(methodInvocation, cachePolicy, cachedItem.Object);
+                            }
                         }
                     }
                     finally
                     {
-                        _syncronizer.Release(requestKey);
+                        _taskSyncronizer.Release(requestKey);
                     }
                 });
 
@@ -105,7 +109,7 @@ namespace Sleipner.Cache.LookupHandlers
             }
             finally
             {
-                _syncronizer.Release(requestKey);
+                _taskSyncronizer.Release(requestKey);
             }
         }
     }

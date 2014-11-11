@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Nito.AsyncEx;
 using Sleipner.Cache.LookupHandlers;
+using Sleipner.Cache.LookupHandlers.Async;
 using Sleipner.Cache.Model;
 using Sleipner.Cache.Policies;
 using Sleipner.Core;
