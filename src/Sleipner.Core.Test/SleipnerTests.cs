@@ -74,5 +74,18 @@ namespace Sleipner.Core.Test
 
             proxiedObject.GetStuff("rofl");
         }
+
+        [Test]
+        [ExpectedException(typeof(SleipnerGenericParameterMustBeReferenceException))]
+        public void TestInvalidInterface()
+        {
+            var implementationMock = new Mock<IInvalidInterface>(MockBehavior.Strict);
+            implementationMock.Setup(a => a.GetStuff("rofl")).Returns("mao");
+
+            var handlerMock = new Mock<IProxyHandler<IInvalidInterface>>(MockBehavior.Strict);
+
+            var sleipner = new SleipnerProxy<IInvalidInterface>(implementationMock.Object);
+            var proxiedObject = sleipner.WrapWith(handlerMock.Object);
+        }
     }
 }

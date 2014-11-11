@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\IInvalidInterface.cs" />
     <Compile Include="Model\ITestInterface.cs" />
     <Compile Include="SleipnerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
