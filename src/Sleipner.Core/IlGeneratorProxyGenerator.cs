@@ -82,14 +82,16 @@ namespace Sleipner.Core
                 if (method.IsGenericMethod)
                 {
                     var genericTypes = method.GetGenericArguments();
-                    foreach (var type in genericTypes)
+                    var parameters = proxyMethod.DefineGenericParameters(genericTypes.Select(a => a.Name).ToArray());
+                    for (var i = 0; i < genericTypes.Length; i++)
                     {
-                        var isReferenceConstrainted = type.GenericParameterAttributes.HasFlag(GenericParameterAttributes.ReferenceTypeConstraint);
+                        var genericType = genericTypes[i];
+                        var isReferenceConstrainted = genericType.GenericParameterAttributes.HasFlag(GenericParameterAttributes.ReferenceTypeConstraint);
                         if (!isReferenceConstrainted)
-                            throw new SleipnerGenericParameterMustBeReferenceException(method, type);   
-                    }
+                            throw new SleipnerGenericParameterMustBeReferenceException(method, genericType);
 
-                    proxyMethod.DefineGenericParameters(genericTypes.Select(a => a.Name).ToArray());
+                        parameters[i].SetGenericParameterAttributes(genericType.GenericParameterAttributes);
+                    }
                 }
 
                 var methodIndex = interfaceType.GetMethods().ToList().IndexOf(method);
@@ -198,7 +200,7 @@ namespace Sleipner.Core
             }
 
             var createdType = proxyBuilder.CreateType();
-            //AssemblyBuilder.Save("Sleipner2CacheProxies.dll");
+            AssemblyBuilder.Save("Sleipner2CacheProxies.dll");
             return createdType;
         }
     }
