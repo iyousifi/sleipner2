@@ -70,7 +70,7 @@ namespace Sleipner.Cache.Test
             var invocation = ProxiedMethodInvocationGenerator<ITestInterface>.FromExpression(a => a.AddNumbersAsync(1, 2));
             var method = invocation.Method;
             var parameters = invocation.Parameters;
-
+            
             var thrownException = new TestException();
             implementation.Setup(a => a.AddNumbersAsync(1, 2)).ThrowsAsync(thrownException);
 
