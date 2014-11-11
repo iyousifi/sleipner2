@@ -80,8 +80,6 @@ namespace Sleipner.Core.Test
         public void TestInvalidInterface()
         {
             var implementationMock = new Mock<IInvalidInterface>(MockBehavior.Strict);
-            implementationMock.Setup(a => a.GetStuff("rofl")).Returns("mao");
-
             var handlerMock = new Mock<IProxyHandler<IInvalidInterface>>(MockBehavior.Strict);
 
             var sleipner = new SleipnerProxy<IInvalidInterface>(implementationMock.Object);
