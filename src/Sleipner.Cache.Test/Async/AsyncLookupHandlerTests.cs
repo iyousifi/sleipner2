@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Diagnostics;
+using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
 using Sleipner.Cache.LookupHandlers.Async;
@@ -176,11 +177,17 @@ namespace Sleipner.Cache.Test.Async
             {
                 awaitableStoreTask.Start();
                 return awaitableStoreTask;
+            }).Verifiable();
+
+            var task = await Task.Factory.StartNew(async () =>
+            {
+                var res = await lookupHandler.LookupAsync(invocation);
+                await awaitableStoreTask;
+                return res;
             });
 
-            var result = await lookupHandler.LookupAsync(invocation);
+            var result = await task;
             Assert.AreEqual(result, cachedObject.Object);
-            Assert.IsTrue(awaitableStoreTask.Wait(5000), "Store action on cache did not appear to have been called");
             policyProvider.VerifyAll();
             cache.VerifyAll();
             implementation.VerifyAll();
@@ -213,9 +220,15 @@ namespace Sleipner.Cache.Test.Async
                 return awaitableStoreTask;
             }).Verifiable();
 
-            var result = await lookupHandler.LookupAsync(invocation);
+            var task = await Task.Factory.StartNew(async () =>
+            {
+                var res = await lookupHandler.LookupAsync(invocation);
+                await awaitableStoreTask;
+                return res;
+            });
+
+            var result = await task;
             Assert.AreEqual(result, cachedObject.Object);
-            Assert.IsTrue(awaitableStoreTask.Wait(5000), "Store action on cache did not appear to have been called");
             policyProvider.VerifyAll();
             cache.VerifyAll();
             implementation.VerifyAll();
@@ -249,9 +262,15 @@ namespace Sleipner.Cache.Test.Async
                 return awaitableStoreTask;
             }).Verifiable();
 
-            var result = await lookupHandler.LookupAsync(invocation);
+            var task = await Task.Factory.StartNew(async () =>
+            {
+                var res = await lookupHandler.LookupAsync(invocation);
+                await awaitableStoreTask;
+                return res;
+            });
+
+            var result = await task;
             Assert.AreEqual(result, cachedObject.Object);
-            Assert.IsTrue(awaitableStoreTask.Wait(5000), "StoreException action on cache did not appear to have been called");
             policyProvider.VerifyAll();
             cache.VerifyAll();
             implementation.VerifyAll();
