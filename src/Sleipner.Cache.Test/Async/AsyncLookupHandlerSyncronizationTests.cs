@@ -1,8 +1,5 @@
 ﻿using System;
-using System.CodeDom;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
@@ -12,7 +9,7 @@ using Sleipner.Cache.Policies;
 using Sleipner.Cache.Test.Model;
 using Sleipner.Core.Util;
 
-namespace Sleipner.Cache.Test
+namespace Sleipner.Cache.Test.Async
 {
     [TestFixture]
     public class AsyncLookupHandlerSyncronizationTests
@@ -112,7 +109,7 @@ namespace Sleipner.Cache.Test
         }
 
         [Test]
-        public async void TestStakeCacheSyncronization()
+        public async void TestStaleCacheSyncronization()
         {
             var implementation = new Mock<ITestInterface>(MockBehavior.Strict);
             var policyProvider = new Mock<ICachePolicyProvider<ITestInterface>>(MockBehavior.Strict);

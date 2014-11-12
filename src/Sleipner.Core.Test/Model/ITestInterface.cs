@@ -8,7 +8,7 @@ namespace Sleipner.Core.Test.Model
 {
     public interface ITestInterface
     {
-        void PassthroughMethod();
+        void PassthroughMethod(int a, string b);
         int AddNumbers(int a, int b);
         Task<int> AddNumbersAsync(int a, int b);
 

@@ -49,9 +49,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LookupHandlers\Async\AsyncLookupHandler.cs" />
-    <Compile Include="LookupHandlers\LookupHandler.cs" />
+    <Compile Include="LookupHandlers\Sync\SyncLookupHandler.cs" />
     <Compile Include="LookupHandlers\RequestKey.cs" />
     <Compile Include="LookupHandlers\Async\TaskSyncronizer.cs" />
+    <Compile Include="LookupHandlers\Sync\RequestSyncronizer.cs" />
+    <Compile Include="LookupHandlers\Sync\RequestWaitHandle.cs" />
     <Compile Include="Model\CachedObject.cs" />
     <Compile Include="Model\CachedObjectState.cs" />
     <Compile Include="Policies\BasicCachePolicyProvider.cs" />

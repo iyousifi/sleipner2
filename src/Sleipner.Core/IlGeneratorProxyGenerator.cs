@@ -200,7 +200,7 @@ namespace Sleipner.Core
             }
 
             var createdType = proxyBuilder.CreateType();
-            AssemblyBuilder.Save("Sleipner2CacheProxies.dll");
+            //AssemblyBuilder.Save("Sleipner2CacheProxies.dll");
             return createdType;
         }
     }

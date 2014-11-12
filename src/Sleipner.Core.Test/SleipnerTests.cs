@@ -33,14 +33,14 @@ namespace Sleipner.Core.Test
         public void TestPassthroughInvocation()
         {
             var implementationMock = new Mock<ITestInterface>(MockBehavior.Strict);
-            implementationMock.Setup(a => a.PassthroughMethod());
+            implementationMock.Setup(a => a.PassthroughMethod(1, "string"));
 
             var handlerMock = new Mock<IProxyHandler<ITestInterface>>(MockBehavior.Strict);
             
             var sleipner = new SleipnerProxy<ITestInterface>(implementationMock.Object);
             var proxiedObject = sleipner.WrapWith(handlerMock.Object);
 
-            proxiedObject.PassthroughMethod();
+            proxiedObject.PassthroughMethod(1, "string");
         }
 
         [Test]

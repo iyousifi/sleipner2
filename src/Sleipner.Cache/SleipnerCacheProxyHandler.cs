@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Nito.AsyncEx;
 using Sleipner.Cache.LookupHandlers;
 using Sleipner.Cache.LookupHandlers.Async;
+using Sleipner.Cache.LookupHandlers.Sync;
 using Sleipner.Cache.Model;
 using Sleipner.Cache.Policies;
 using Sleipner.Core;
@@ -19,7 +20,7 @@ namespace Sleipner.Cache
         private readonly ICachePolicyProvider<T> _cachePolicyProvider;
         private readonly ICacheProvider<T> _cache;
         private readonly AsyncLookupHandler<T> _asyncLookupHandler;
-        private readonly LookupHandler<T> _lookupHandler;
+        private readonly SyncLookupHandler<T> _syncLookupHandler;
  
         public SleipnerCacheProxyHandler(T implementation, ICachePolicyProvider<T> cachePolicyProvider, ICacheProvider<T> cache)
         {
@@ -28,7 +29,7 @@ namespace Sleipner.Cache
             _cache = cache;
 
             _asyncLookupHandler = new AsyncLookupHandler<T>(_implementation, _cachePolicyProvider, _cache);
-            _lookupHandler = new LookupHandler<T>(_implementation, _cachePolicyProvider, _cache);
+            _syncLookupHandler = new SyncLookupHandler<T>(_implementation, _cachePolicyProvider, _cache);
         }
 
         public async Task<TResult> HandleAsync<TResult>(ProxiedMethodInvocation<T, TResult> methodInvocation)
@@ -38,7 +39,7 @@ namespace Sleipner.Cache
 
         public TResult Handle<TResult>(ProxiedMethodInvocation<T, TResult> methodInvocation)
         {
-            return _lookupHandler.Lookup(methodInvocation);
+            return _syncLookupHandler.Lookup(methodInvocation);
         }
     }
 }
