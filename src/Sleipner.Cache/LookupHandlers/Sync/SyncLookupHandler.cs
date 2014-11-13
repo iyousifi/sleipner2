@@ -109,7 +109,6 @@ namespace Sleipner.Cache.LookupHandlers.Sync
             {
                 thrownException = e;
                 AsyncContext.Run(() => _cache.StoreExceptionAsync(methodInvocation, cachePolicy, thrownException));
-
                 throw;
             }
             finally

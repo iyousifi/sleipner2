@@ -61,6 +61,7 @@
     <Compile Include="Model\ITestInterface.cs" />
     <Compile Include="Model\TestException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sync\SyncLookupHandlerSyncronizationTests.cs" />
     <Compile Include="Sync\SyncLookupHandlerTests.cs" />
   </ItemGroup>
   <ItemGroup>

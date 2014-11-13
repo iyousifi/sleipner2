@@ -1,19 +1,22 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
-using Sleipner.Cache.LookupHandlers.Async;
+using Sleipner.Cache.LookupHandlers.Sync;
 using Sleipner.Cache.Model;
 using Sleipner.Cache.Policies;
 using Sleipner.Cache.Test.Model;
 using Sleipner.Core.Util;
 
-namespace Sleipner.Cache.Test.Async
+namespace Sleipner.Cache.Test.Sync
 {
     [TestFixture]
-    public class AsyncLookupHandlerSyncronizationTests
+    public class SyncLookupHandlerSyncronizationTests
     {
         [Test]
         public async void TestEmptyCacheSyncronization()
@@ -22,13 +25,13 @@ namespace Sleipner.Cache.Test.Async
             var policyProvider = new Mock<ICachePolicyProvider<ITestInterface>>(MockBehavior.Strict);
             var cache = new Mock<ICacheProvider<ITestInterface>>(MockBehavior.Strict);
 
-            var lookupHandler = new AsyncLookupHandler<ITestInterface>(implementation.Object, policyProvider.Object, cache.Object);
-            var invocation = ProxiedMethodInvocationGenerator<ITestInterface>.FromExpression(a => a.AddNumbersAsync(1, 2));
+            var lookupHandler = new SyncLookupHandler<ITestInterface>(implementation.Object, policyProvider.Object, cache.Object);
+            var invocation = ProxiedMethodInvocationGenerator<ITestInterface>.FromExpression(a => a.AddNumbers(1, 2));
             var method = invocation.Method;
             var parameters = invocation.Parameters;
 
             const int implReturnValue = 3;
-            implementation.Setup(a => a.AddNumbersAsync(1, 2)).ReturnsAsync(implReturnValue);
+            implementation.Setup(a => a.AddNumbers(1, 2)).Returns(implReturnValue);
 
             var cachePolicy = new CachePolicy() { CacheDuration = 20 };
             policyProvider.Setup(a => a.GetPolicy(method, parameters)).Returns(cachePolicy);
@@ -36,23 +39,27 @@ namespace Sleipner.Cache.Test.Async
             var cachedObject = new CachedObject<int>(CachedObjectState.None, null);
             cache.Setup(a => a.GetAsync(invocation, cachePolicy)).ReturnsAsync(cachedObject);
 
-            var cacheStoreTask = new Task(() => { });
-            cache.Setup(a => a.StoreAsync(invocation, cachePolicy, implReturnValue)).Returns(() =>
-            {
-                cacheStoreTask.Start();
-                return cacheStoreTask;
-            });
+            var cacheStoreTask = new Task(() => {});
+            cache.Setup(a => a.StoreAsync(invocation, cachePolicy, implReturnValue)).Returns(() => cacheStoreTask);
 
             const int taskCount = 10;
             var tasks = new Task<int>[taskCount];
             for (var i = 0; i < taskCount; i++)
             {
-                tasks[i] = lookupHandler.LookupAsync(invocation);
+                var idx = i;
+                tasks[idx] = Task.Factory.StartNew(() =>
+                {
+                    if (idx == (taskCount-1))
+                    {
+                        cacheStoreTask.Start();
+                    }
+                    return lookupHandler.Lookup(invocation);
+                });
             }
 
             await Task.WhenAll(tasks);
             Assert.IsTrue(tasks.All(a => a.Result == implReturnValue));
-            implementation.Verify(a => a.AddNumbersAsync(1, 2), Times.Once);
+            implementation.Verify(a => a.AddNumbers(1, 2), Times.Once);
             Assert.IsTrue(cacheStoreTask.Wait(5000), "Store action on cache did not appear to have been called");
             cache.Verify(a => a.StoreAsync(invocation, cachePolicy, implReturnValue), Times.Once);
         }
@@ -64,13 +71,13 @@ namespace Sleipner.Cache.Test.Async
             var policyProvider = new Mock<ICachePolicyProvider<ITestInterface>>(MockBehavior.Strict);
             var cache = new Mock<ICacheProvider<ITestInterface>>(MockBehavior.Strict);
 
-            var lookupHandler = new AsyncLookupHandler<ITestInterface>(implementation.Object, policyProvider.Object, cache.Object);
-            var invocation = ProxiedMethodInvocationGenerator<ITestInterface>.FromExpression(a => a.AddNumbersAsync(1, 2));
+            var lookupHandler = new SyncLookupHandler<ITestInterface>(implementation.Object, policyProvider.Object, cache.Object);
+            var invocation = ProxiedMethodInvocationGenerator<ITestInterface>.FromExpression(a => a.AddNumbers(1, 2));
             var method = invocation.Method;
             var parameters = invocation.Parameters;
-            
+
             var thrownException = new TestException();
-            implementation.Setup(a => a.AddNumbersAsync(1, 2)).ThrowsAsync(thrownException);
+            implementation.Setup(a => a.AddNumbers(1, 2)).Throws(thrownException);
 
             var cachePolicy = new CachePolicy() { CacheDuration = 20 };
             policyProvider.Setup(a => a.GetPolicy(method, parameters)).Returns(cachePolicy);
@@ -78,22 +85,22 @@ namespace Sleipner.Cache.Test.Async
             var cachedObject = new CachedObject<int>(CachedObjectState.None, null);
             cache.Setup(a => a.GetAsync(invocation, cachePolicy)).ReturnsAsync(cachedObject);
 
-            var cacheStoreTask = new Task(() =>
-            {
-                Thread.Sleep(50);
-            });
-            cache.Setup(a => a.StoreExceptionAsync(invocation, cachePolicy, thrownException)).Returns(() =>
-            {
-                cacheStoreTask.Start();
-                
-                return cacheStoreTask;
-            });
+            var cacheStoreTask = new Task(() => {});
+            cache.Setup(a => a.StoreExceptionAsync(invocation, cachePolicy, thrownException)).Returns(() => cacheStoreTask);
 
             const int taskCount = 10;
             var tasks = new Task<int>[taskCount];
             for (var i = 0; i < taskCount; i++)
             {
-                tasks[i] = lookupHandler.LookupAsync(invocation);
+                var idx = i;
+                tasks[idx] = Task.Factory.StartNew(() =>
+                {
+                    if (idx == (taskCount-1))
+                    {
+                        cacheStoreTask.Start();
+                    }
+                    return lookupHandler.Lookup(invocation);
+                });
             }
 
             foreach (var t in tasks)
@@ -105,10 +112,11 @@ namespace Sleipner.Cache.Test.Async
                 }
                 catch (TestException e)
                 {
+                    
                 }
             }
-            
-            implementation.Verify(a => a.AddNumbersAsync(1, 2), Times.Once);
+
+            implementation.Verify(a => a.AddNumbers(1, 2), Times.Once);
             Assert.IsTrue(cacheStoreTask.Wait(5000), "Store action on cache did not appear to have been called");
             cache.Verify(a => a.StoreExceptionAsync(invocation, cachePolicy, thrownException), Times.Once);
         }
@@ -120,13 +128,13 @@ namespace Sleipner.Cache.Test.Async
             var policyProvider = new Mock<ICachePolicyProvider<ITestInterface>>(MockBehavior.Strict);
             var cache = new Mock<ICacheProvider<ITestInterface>>(MockBehavior.Strict);
 
-            var lookupHandler = new AsyncLookupHandler<ITestInterface>(implementation.Object, policyProvider.Object, cache.Object);
-            var invocation = ProxiedMethodInvocationGenerator<ITestInterface>.FromExpression(a => a.AddNumbersAsync(1, 2));
+            var lookupHandler = new SyncLookupHandler<ITestInterface>(implementation.Object, policyProvider.Object, cache.Object);
+            var invocation = ProxiedMethodInvocationGenerator<ITestInterface>.FromExpression(a => a.AddNumbers(1, 2));
             var method = invocation.Method;
             var parameters = invocation.Parameters;
 
             const int implReturnValue = 3;
-            implementation.Setup(a => a.AddNumbersAsync(1, 2)).ReturnsAsync(implReturnValue);
+            implementation.Setup(a => a.AddNumbers(1, 2)).Returns(implReturnValue);
 
             var cachePolicy = new CachePolicy() { CacheDuration = 20 };
             policyProvider.Setup(a => a.GetPolicy(method, parameters)).Returns(cachePolicy);
@@ -146,13 +154,15 @@ namespace Sleipner.Cache.Test.Async
             var tasks = new Task<int>[taskCount];
             for (var i = 0; i < taskCount; i++)
             {
-                tasks[i] = lookupHandler.LookupAsync(invocation);
+                var idx = i;
+                tasks[idx] = Task.Factory.StartNew(() => lookupHandler.Lookup(invocation));
             }
 
             await Task.WhenAll(tasks);
-            Assert.IsTrue(tasks.All(a => a.Result == cachedValue));
-            implementation.Verify(a => a.AddNumbersAsync(1, 2), Times.Once);
             Assert.IsTrue(cacheStoreTask.Wait(5000), "Store action on cache did not appear to have been called");
+
+            Assert.IsTrue(tasks.All(a => a.Result == cachedValue));
+            implementation.Verify(a => a.AddNumbers(1, 2), Times.Once);
             cache.Verify(a => a.StoreAsync(invocation, cachePolicy, implReturnValue), Times.Once);
         }
     }
