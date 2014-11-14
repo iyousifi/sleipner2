@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Sleipner.Core.Util;
 
 namespace Sleipner.Cache.Policies
 {
@@ -16,6 +17,11 @@ namespace Sleipner.Cache.Policies
                 return _default;
 
             return policyHandle.Policy;
+        }
+
+        public CachePolicy GetPolicy<TResult>(ProxiedMethodInvocation<T, TResult> invocation)
+        {
+            return GetPolicy(invocation.Method, invocation.Parameters);
         }
 
         public CachePolicy RegisterMethodConfiguration(IConfiguredMethod<T> methodConfiguration)
