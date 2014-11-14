@@ -21,7 +21,9 @@ namespace Sleipner.Cache
         private readonly ICacheProvider<T> _cache;
         private readonly AsyncLookupHandler<T> _asyncLookupHandler;
         private readonly SyncLookupHandler<T> _syncLookupHandler;
- 
+
+        private readonly TaskSyncronizer _taskUpdateSyncronizer;
+
         public SleipnerCacheProxyHandler(T implementation, ICachePolicyProvider<T> cachePolicyProvider, ICacheProvider<T> cache)
         {
             _implementation = implementation;
@@ -30,6 +32,35 @@ namespace Sleipner.Cache
 
             _asyncLookupHandler = new AsyncLookupHandler<T>(_implementation, _cachePolicyProvider, _cache);
             _syncLookupHandler = new SyncLookupHandler<T>(_implementation, _cachePolicyProvider, _cache);
+
+            _taskUpdateSyncronizer = new TaskSyncronizer();
+        }
+
+        public async Task<TResult> HandleUpdateAsync<TResult>(ProxiedMethodInvocation<T, TResult> methodInvocation)
+        {
+            var cachePolicy = _cachePolicyProvider.GetPolicy(methodInvocation.Method, methodInvocation.Parameters);
+            if (cachePolicy == null || cachePolicy.CacheDuration <= 0)
+            {
+                return await methodInvocation.InvokeAsync(_implementation);
+            }
+
+            var requestKey = new RequestKey(methodInvocation.Method, methodInvocation.Parameters);
+            Task<TResult> awaitableTask;
+            if (_taskUpdateSyncronizer.TryGetAwaitable(requestKey, () => methodInvocation.InvokeAsync(_implementation), out awaitableTask))
+            {
+                return await awaitableTask;
+            }
+
+            try
+            {
+                var data = await awaitableTask;
+                await _cache.StoreAsync(methodInvocation, cachePolicy, data);
+                return data;
+            }
+            finally
+            {
+                _taskUpdateSyncronizer.Release(requestKey);
+            }
         }
 
         public async Task<TResult> HandleAsync<TResult>(ProxiedMethodInvocation<T, TResult> methodInvocation)

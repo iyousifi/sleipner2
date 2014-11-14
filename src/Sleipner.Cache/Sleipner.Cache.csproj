@@ -48,6 +48,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DictionaryCache\DictionaryCacheItem.cs" />
+    <Compile Include="DictionaryCache\DictionaryCacheProvider.cs" />
+    <Compile Include="Extensions\ProxiedMethodInvocationExtensions.cs" />
     <Compile Include="LookupHandlers\Async\AsyncLookupHandler.cs" />
     <Compile Include="LookupHandlers\Sync\SyncLookupHandler.cs" />
     <Compile Include="LookupHandlers\RequestKey.cs" />

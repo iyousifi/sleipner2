@@ -19,5 +19,10 @@ namespace Sleipner.Cache.Model
             State = state;
             ThrownException = exception;
         }
+
+        public static CachedObject<T> Empty()
+        {
+            return new CachedObject<T>(CachedObjectState.None, default(T));
+        } 
     }
 }
