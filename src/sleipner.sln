@@ -11,6 +11,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sleipner.Cache.Test", "Slei
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sleipner.Core.TestConsole", "Sleipner.Core.TestConsole\Sleipner.Core.TestConsole.csproj", "{538041F3-12C8-4154-9760-11B76AA668D9}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestThings", "TestThings", "{23B79152-5788-434F-BD40-287E5390EB8D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SleipnerTestSite", "SleipnerTestSite\SleipnerTestSite.csproj", "{BD8B388E-75E3-43C4-B6A8-8961E696B708}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SleipnerTestSite.Model", "SleipnerTestSite.Model\SleipnerTestSite.Model.csproj", "{A0DC63E0-582A-4525-9C10-291E08554E27}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SleipnerTestSite.Service", "SleipnerTestSite.Service\SleipnerTestSite.Service.csproj", "{C5287969-F140-4D1E-B252-AC82CE9CE057}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sleipner.Cache.Memcached", "Sleipner.Cache.Memcached\Sleipner.Cache.Memcached.csproj", "{E573BC69-DB2F-45B2-84D3-41BC55547C65}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,8 +47,30 @@ Global
 		{538041F3-12C8-4154-9760-11B76AA668D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{538041F3-12C8-4154-9760-11B76AA668D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{538041F3-12C8-4154-9760-11B76AA668D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD8B388E-75E3-43C4-B6A8-8961E696B708}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD8B388E-75E3-43C4-B6A8-8961E696B708}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD8B388E-75E3-43C4-B6A8-8961E696B708}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD8B388E-75E3-43C4-B6A8-8961E696B708}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0DC63E0-582A-4525-9C10-291E08554E27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0DC63E0-582A-4525-9C10-291E08554E27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0DC63E0-582A-4525-9C10-291E08554E27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0DC63E0-582A-4525-9C10-291E08554E27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5287969-F140-4D1E-B252-AC82CE9CE057}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5287969-F140-4D1E-B252-AC82CE9CE057}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5287969-F140-4D1E-B252-AC82CE9CE057}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5287969-F140-4D1E-B252-AC82CE9CE057}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E573BC69-DB2F-45B2-84D3-41BC55547C65}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E573BC69-DB2F-45B2-84D3-41BC55547C65}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E573BC69-DB2F-45B2-84D3-41BC55547C65}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E573BC69-DB2F-45B2-84D3-41BC55547C65}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{538041F3-12C8-4154-9760-11B76AA668D9} = {23B79152-5788-434F-BD40-287E5390EB8D}
+		{BD8B388E-75E3-43C4-B6A8-8961E696B708} = {23B79152-5788-434F-BD40-287E5390EB8D}
+		{A0DC63E0-582A-4525-9C10-291E08554E27} = {23B79152-5788-434F-BD40-287E5390EB8D}
+		{C5287969-F140-4D1E-B252-AC82CE9CE057} = {23B79152-5788-434F-BD40-287E5390EB8D}
 	EndGlobalSection
 EndGlobal

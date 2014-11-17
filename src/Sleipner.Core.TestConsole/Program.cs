@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MemcachedSharp;
 using Sleipner.Core.Util;
 
 namespace Sleipner.Core.TestConsole
@@ -11,10 +12,10 @@ namespace Sleipner.Core.TestConsole
     {
         static void Main(string[] args)
         {
-            var sleipnerProxy = new SleipnerProxy<ITestInterface>(new TestImplementation());
+            /*var sleipnerProxy = new SleipnerProxy<ITestInterface>(new TestImplementation());
             var kk = sleipnerProxy.WrapWith(new Handler());
 
-            kk.GetStuff("sdss");
+            kk.GetStuff("sdss");*/
         }
     }
 
