@@ -114,17 +114,23 @@ namespace Sleipner.Cache.Memcached
             return end;
         }
 
-        public T GetNode(String key)
+        public bool TryGetNode(String key, out T node)
         {
-            //return GetNode_slow(key);
+            if (circle.Any())
+            {
+                //return GetNode_slow(key);
 
-            int hash = BetterHash(key);
+                int hash = BetterHash(key);
 
-            int first = First_ge(ayKeys, hash);
+                int first = First_ge(ayKeys, hash);
 
-            //int diff = circle.Keys[first] - hash;
+                //int diff = circle.Keys[first] - hash;
 
-            return circle[ayKeys[first]];
+                node = circle[ayKeys[first]];
+                return true;
+            }
+            node = default(T);
+            return false;
         }
 
         //default String.GetHashCode() can't well spread strings like "1", "2", "3"

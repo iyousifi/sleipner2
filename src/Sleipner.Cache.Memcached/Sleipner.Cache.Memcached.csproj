@@ -63,7 +63,7 @@
     <Compile Include="CircleCluster\Hashing\ConsistentHash.cs" />
     <Compile Include="CircleCluster\IMemcachedClient.cs" />
     <Compile Include="CircleCluster\MemcachedClientCluster.cs" />
-    <Compile Include="CircleCluster\MemcachedClusterNode.cs" />
+    <Compile Include="CircleCluster\ClusteredMemcachedClient.cs" />
     <Compile Include="MemcachedProvider.cs" />
     <Compile Include="CircleCluster\Hashing\MurmurHash2.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

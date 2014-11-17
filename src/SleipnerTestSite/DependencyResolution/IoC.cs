@@ -21,6 +21,7 @@ using Sleipner.Cache;
 using Sleipner.Cache.Configuration.Expressions;
 using Sleipner.Cache.DictionaryCache;
 using Sleipner.Cache.Memcached;
+using Sleipner.Cache.Memcached.CircleCluster;
 using SleipnerTestSite.Model.Contract;
 using SleipnerTestSite.Service;
 using StructureMap;
@@ -39,6 +40,7 @@ namespace SleipnerTestSite.DependencyResolution {
             ObjectFactory.Initialize(x =>
             {
                 x.For<ICrapService>().Singleton().Use(proxy.CreateCachedInstance());
+                x.For<IMemcachedClient>().Singleton().Use(new MemcachedClientCluster(new[] {"localhost:11111", "localhost:11211"}));
             });
             return ObjectFactory.Container;
         }
