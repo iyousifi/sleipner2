@@ -11,6 +11,11 @@ namespace Sleipner.Cache.Memcached.MemcachedWrapper.Hashing
         private int _replicate = 100; //default _replicate count
         private int[] ayKeys = null; //cache the ordered keys for better performance
 
+        public ConsistentHash(IEnumerable<T> nodes)
+        {
+            Init(nodes);
+        } 
+
         //it's better you override the GetHashCode() of T.
         //we will use GetHashCode() to identify different node.
         public void Init(IEnumerable<T> nodes)

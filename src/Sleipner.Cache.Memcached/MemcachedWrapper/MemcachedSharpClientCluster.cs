@@ -22,8 +22,7 @@ namespace Sleipner.Cache.Memcached.MemcachedWrapper
             _timer = new Timer(state => AsyncContext.Run(() => AwakenDeadServers()), null, 10000, 10000);
             _clients = endPoints.Select(a => new MemcachedSharpClient(a, options)).ToList();
 
-            _nodes = new ConsistentHash<MemcachedSharpClient>();
-            _nodes.Init(_clients);
+            _nodes = new ConsistentHash<MemcachedSharpClient>(_clients);
         }
 
         /// <summary>
@@ -58,6 +57,7 @@ namespace Sleipner.Cache.Memcached.MemcachedWrapper
             {
                 if (!server.IsAlive)
                 {
+                    Debug.WriteLine("Server: " + server.EndPoint + " is dead. Selecting the next one");
                     if (!_clients.Any(a => a.IsAlive))
                     {
                         client = null;
@@ -75,10 +75,13 @@ namespace Sleipner.Cache.Memcached.MemcachedWrapper
                     {
                         if (index == initialIndex) //We're right back where we started. No server is online.
                         {
+                            Debug.WriteLine("No server is up. Returning null-server");
                             client = null;
                             return false;
                         }
                     }
+
+                    Debug.WriteLine("Failing over to: " + server.EndPoint);
                 }
 
                 client = server;
