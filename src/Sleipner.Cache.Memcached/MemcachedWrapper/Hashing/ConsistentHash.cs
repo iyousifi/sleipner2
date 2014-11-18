@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Sleipner.Cache.Memcached
+namespace Sleipner.Cache.Memcached.MemcachedWrapper.Hashing
 {
     public class ConsistentHash<T>
     {

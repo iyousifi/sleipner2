@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using MemcachedSharp;
-using Sleipner.Cache.Memcached.CircleCluster;
+using Sleipner.Cache.Memcached.MemcachedWrapper;
 using SleipnerTestSite.Model.Contract;
 
 namespace SleipnerTestSite.Controllers
@@ -13,9 +13,9 @@ namespace SleipnerTestSite.Controllers
     public class HomeController : Controller
     {
         private readonly ICrapService _crapService;
-        private readonly IMemcachedClient _client;
+        private readonly IMemcachedSharpClient _client;
 
-        public HomeController(ICrapService crapService, IMemcachedClient client)
+        public HomeController(ICrapService crapService, IMemcachedSharpClient client)
         {
             _crapService = crapService;
             _client = client;

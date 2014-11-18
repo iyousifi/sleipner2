@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using MemcachedSharp;
 
-namespace Sleipner.Cache.Memcached.CircleCluster
+namespace Sleipner.Cache.Memcached.MemcachedWrapper
 {
-    public interface IMemcachedClient
+    public interface IMemcachedSharpClient
     {
         Task<MemcachedItem> Get(string key);
         Task<MemcachedItem> Gets(string key);

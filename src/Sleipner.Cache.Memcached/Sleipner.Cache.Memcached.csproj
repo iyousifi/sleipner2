@@ -60,12 +60,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CircleCluster\Hashing\ConsistentHash.cs" />
-    <Compile Include="CircleCluster\IMemcachedClient.cs" />
-    <Compile Include="CircleCluster\MemcachedClientCluster.cs" />
-    <Compile Include="CircleCluster\ClusteredMemcachedClient.cs" />
+    <Compile Include="MemcachedWrapper\Hashing\ConsistentHash.cs" />
+    <Compile Include="MemcachedWrapper\IMemcachedSharpClient.cs" />
+    <Compile Include="MemcachedWrapper\MemcachedSharpClientCluster.cs" />
+    <Compile Include="MemcachedWrapper\MemcachedSharpClient.cs" />
     <Compile Include="MemcachedProvider.cs" />
-    <Compile Include="CircleCluster\Hashing\MurmurHash2.cs" />
+    <Compile Include="MemcachedWrapper\Hashing\MurmurHash2.cs" />
+    <Compile Include="MemcachedWrapper\NullMemcachedSharpClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

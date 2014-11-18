@@ -1,26 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using MemcachedSharp;
 
-namespace Sleipner.Cache.Memcached.CircleCluster
+namespace Sleipner.Cache.Memcached.MemcachedWrapper
 {
-    public class ClusteredMemcachedClient : IMemcachedClient
+    public class MemcachedSharpClient : IMemcachedSharpClient
     {
         public readonly string EndPoint;
-        private readonly MemcachedClient _client;
+        private readonly MemcachedSharp.MemcachedClient _client;
         public bool IsAlive;
 
-        public ClusteredMemcachedClient(string endPoint, MemcachedOptions options = null)
+        public MemcachedSharpClient(string endPoint, MemcachedOptions options = null)
         {
             EndPoint = endPoint;
-            _client = new MemcachedClient(endPoint, options);
+            _client = new MemcachedSharp.MemcachedClient(endPoint, options);
             IsAlive = true;
         }
 
-        protected bool Equals(ClusteredMemcachedClient other)
+        protected bool Equals(MemcachedSharpClient other)
         {
             return string.Equals(EndPoint, other.EndPoint);
         }
@@ -35,7 +31,7 @@ namespace Sleipner.Cache.Memcached.CircleCluster
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((ClusteredMemcachedClient) obj);
+            return Equals((MemcachedSharpClient) obj);
         }
 
         public Task<MemcachedItem> Get(string key)
