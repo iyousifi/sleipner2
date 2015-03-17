@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MemcachedSharp;
+using Sleipner.Cache.Extensions;
+using Sleipner.Cache.MemcachedSharp.MemcachedWrapper;
+using Sleipner.Cache.MemcachedSharp.MemcachedWrapper.Hashing;
 using Sleipner.Cache.Model;
 using Sleipner.Cache.Policies;
 using Sleipner.Core.Util;
@@ -10,13 +13,22 @@ namespace Sleipner.Cache.MemcachedSharp
 {
     public class MemcachedProvider<T> : ICacheProvider<T> where T : class
     {
-        public MemcachedProvider(IEnumerable<MemcachedClient> clients)
+        private MemcachedSharpClientCluster _cluster;
+        public MemcachedProvider(IEnumerable<string> endPoints, MemcachedOptions options = null)
         {
+            _cluster = new MemcachedSharpClientCluster(endPoints, options);
         }
 
-        public Task<CachedObject<TResult>> GetAsync<TResult>(ProxiedMethodInvocation<T, TResult> proxiedMethodInvocation, CachePolicy cachePolicy)
+        public async Task<CachedObject<TResult>> GetAsync<TResult>(ProxiedMethodInvocation<T, TResult> proxiedMethodInvocation, CachePolicy cachePolicy)
         {
-            throw new NotImplementedException();
+            var key = proxiedMethodInvocation.GetHashString();
+            var item = await _cluster.Get(key);
+            if (item != null)
+            {
+                
+            }
+
+            return new CachedObject<TResult>(CachedObjectState.None, default(TResult));
         }
 
         public Task StoreAsync<TResult>(ProxiedMethodInvocation<T, TResult> proxiedMethodInvocation, CachePolicy cachePolicy, TResult data)
