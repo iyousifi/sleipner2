@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using MemcachedSharp;
-using Sleipner.Cache.Memcached.MemcachedWrapper;
+using Sleipner.Cache.MemcachedSharp.MemcachedWrapper;
 using SleipnerTestSite.Model.Contract;
 
 namespace SleipnerTestSite.Controllers

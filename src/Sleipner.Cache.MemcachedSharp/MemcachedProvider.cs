@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using MemcachedSharp;
 using Sleipner.Cache.Model;
 using Sleipner.Cache.Policies;
 using Sleipner.Core.Util;
 
-namespace Sleipner.Cache.Memcached
+namespace Sleipner.Cache.MemcachedSharp
 {
     public class MemcachedProvider<T> : ICacheProvider<T> where T : class
     {

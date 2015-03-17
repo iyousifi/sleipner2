@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
-using Sleipner.Cache.Memcached.MemcachedWrapper.Hashing;
+using Sleipner.Cache.MemcachedSharp.MemcachedWrapper.Hashing;
 
-namespace Sleipner.Cache.Memcached.Test
+namespace Sleipner.Cache.MemcachedSharp.Test
 {
     [TestFixture]
     public class ConsistentHashTest

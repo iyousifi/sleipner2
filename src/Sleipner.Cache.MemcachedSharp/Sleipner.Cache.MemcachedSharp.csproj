@@ -7,8 +7,8 @@
     <ProjectGuid>{E573BC69-DB2F-45B2-84D3-41BC55547C65}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Sleipner.Cache.Memcached</RootNamespace>
-    <AssemblyName>Sleipner.Cache.Memcached</AssemblyName>
+    <RootNamespace>Sleipner.Cache.MemcachedSharp</RootNamespace>
+    <AssemblyName>Sleipner.Cache.MemcachedSharp</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

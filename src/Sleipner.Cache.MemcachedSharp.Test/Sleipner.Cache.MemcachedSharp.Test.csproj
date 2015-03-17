@@ -7,8 +7,8 @@
     <ProjectGuid>{6EB1C016-1024-4573-9A94-188059D0B77E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Sleipner.Cache.Memcached.Test</RootNamespace>
-    <AssemblyName>Sleipner.Cache.Memcached.Test</AssemblyName>
+    <RootNamespace>Sleipner.Cache.MemcachedSharp.Test</RootNamespace>
+    <AssemblyName>Sleipner.Cache.MemcachedSharp.Test</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -54,9 +54,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Sleipner.Cache.Memcached\Sleipner.Cache.Memcached.csproj">
+    <ProjectReference Include="..\Sleipner.Cache.MemcachedSharp\Sleipner.Cache.MemcachedSharp.csproj">
       <Project>{E573BC69-DB2F-45B2-84D3-41BC55547C65}</Project>
-      <Name>Sleipner.Cache.Memcached</Name>
+      <Name>Sleipner.Cache.MemcachedSharp</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

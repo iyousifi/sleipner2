@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using MemcachedSharp;
 
-namespace Sleipner.Cache.Memcached.MemcachedWrapper
+namespace Sleipner.Cache.MemcachedSharp.MemcachedWrapper
 {
     public interface IMemcachedSharpClient
     {

@@ -1,18 +1,18 @@
 ﻿using System.Threading.Tasks;
 using MemcachedSharp;
 
-namespace Sleipner.Cache.Memcached.MemcachedWrapper
+namespace Sleipner.Cache.MemcachedSharp.MemcachedWrapper
 {
     public class MemcachedSharpClient : IMemcachedSharpClient
     {
         public readonly string EndPoint;
-        private readonly MemcachedSharp.MemcachedClient _client;
+        private readonly global::MemcachedSharp.MemcachedClient _client;
         public bool IsAlive;
 
         public MemcachedSharpClient(string endPoint, MemcachedOptions options = null)
         {
             EndPoint = endPoint;
-            _client = new MemcachedSharp.MemcachedClient(endPoint, options);
+            _client = new global::MemcachedSharp.MemcachedClient(endPoint, options);
             IsAlive = true;
         }
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace Sleipner.Cache.Memcached.MemcachedWrapper.Hashing
+namespace Sleipner.Cache.MemcachedSharp.MemcachedWrapper.Hashing
 {
     public class MurmurHash2
     {

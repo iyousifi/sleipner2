@@ -7,9 +7,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using MemcachedSharp;
 using Nito.AsyncEx;
-using Sleipner.Cache.Memcached.MemcachedWrapper.Hashing;
+using Sleipner.Cache.MemcachedSharp.MemcachedWrapper.Hashing;
 
-namespace Sleipner.Cache.Memcached.MemcachedWrapper
+namespace Sleipner.Cache.MemcachedSharp.MemcachedWrapper
 {
     public class MemcachedSharpClientCluster : IMemcachedSharpClient
     {

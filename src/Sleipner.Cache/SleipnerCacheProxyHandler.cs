@@ -36,33 +36,6 @@ namespace Sleipner.Cache
             _taskUpdateSyncronizer = new TaskSyncronizer();
         }
 
-        public async Task<TResult> HandleUpdateAsync<TResult>(ProxiedMethodInvocation<T, TResult> methodInvocation)
-        {
-            var cachePolicy = _cachePolicyProvider.GetPolicy(methodInvocation.Method, methodInvocation.Parameters);
-            if (cachePolicy == null || cachePolicy.CacheDuration <= 0)
-            {
-                return await methodInvocation.InvokeAsync(_implementation);
-            }
-
-            var requestKey = new RequestKey(methodInvocation.Method, methodInvocation.Parameters);
-            Task<TResult> awaitableTask;
-            if (_taskUpdateSyncronizer.TryGetAwaitable(requestKey, () => methodInvocation.InvokeAsync(_implementation), out awaitableTask))
-            {
-                return await awaitableTask;
-            }
-
-            try
-            {
-                var data = await awaitableTask;
-                await _cache.StoreAsync(methodInvocation, cachePolicy, data);
-                return data;
-            }
-            finally
-            {
-                _taskUpdateSyncronizer.Release(requestKey);
-            }
-        }
-
         public async Task<TResult> HandleAsync<TResult>(ProxiedMethodInvocation<T, TResult> methodInvocation)
         {
             return await _asyncLookupHandler.LookupAsync(methodInvocation);

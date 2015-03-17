@@ -161,9 +161,9 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Sleipner.Cache.Memcached\Sleipner.Cache.Memcached.csproj">
+    <ProjectReference Include="..\Sleipner.Cache.MemcachedSharp\Sleipner.Cache.MemcachedSharp.csproj">
       <Project>{e573bc69-db2f-45b2-84d3-41bc55547c65}</Project>
-      <Name>Sleipner.Cache.Memcached</Name>
+      <Name>Sleipner.Cache.MemcachedSharp</Name>
     </ProjectReference>
     <ProjectReference Include="..\Sleipner.Cache\Sleipner.Cache.csproj">
       <Project>{b9381a2d-20e3-4ee5-9748-47e145550154}</Project>
