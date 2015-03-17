@@ -40,7 +40,7 @@ namespace SleipnerTestSite.DependencyResolution {
             ObjectFactory.Initialize(x =>
             {
                 x.For<ICrapService>().Singleton().Use(proxy.CreateCachedInstance());
-                x.For<IMemcachedSharpClient>().Singleton().Use(new MemcachedSharpClientCluster(new[] {"localhost:11111", "localhost:11211"}));
+                x.For<IMemcachedSharpClient>().Singleton().Use(new MemcachedSharpClientCluster(new[] {"localhost:11211", "a70013.net.dr.dk:11211"}));
             });
             return ObjectFactory.Container;
         }

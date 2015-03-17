@@ -14,7 +14,7 @@ namespace Sleipner.Cache.Memcached.MemcachedWrapper
     public class MemcachedSharpClientCluster : IMemcachedSharpClient
     {
         private readonly List<MemcachedSharpClient> _clients = new List<MemcachedSharpClient>();
-        private ConsistentHash<MemcachedSharpClient> _nodes;
+        private readonly ConsistentHash<MemcachedSharpClient> _nodes;
         private readonly Timer _timer;
 
         public MemcachedSharpClientCluster(IEnumerable<string> endPoints, MemcachedOptions options = null)
@@ -55,6 +55,7 @@ namespace Sleipner.Cache.Memcached.MemcachedWrapper
             MemcachedSharpClient server;
             if (_nodes.TryGetNode(key, out server))
             {
+                Debug.WriteLine("Selected server: " + server.EndPoint);
                 if (!server.IsAlive)
                 {
                     Debug.WriteLine("Server: " + server.EndPoint + " is dead. Selecting the next one");

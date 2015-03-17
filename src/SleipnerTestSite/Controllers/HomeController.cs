@@ -24,9 +24,7 @@ namespace SleipnerTestSite.Controllers
         public async Task<ActionResult> Index()
         {
             await _client.Get("blaaa");
-            await _client.Get("blaaa1");
-            await _client.Get("blaaa2");
-            await _client.Get("blaaa3");
+            await _client.Get("1234asf");
 
 
             string data = null; //_crapService.GetCrap();
