@@ -61,6 +61,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MemcachedObject.cs" />
     <Compile Include="MemcachedWrapper\Hashing\ConsistentHash.cs" />
     <Compile Include="MemcachedWrapper\IMemcachedSharpClient.cs" />
     <Compile Include="MemcachedWrapper\MemcachedSharpClientCluster.cs" />

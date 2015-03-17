@@ -20,6 +20,7 @@ using MemcachedSharp;
 using Sleipner.Cache;
 using Sleipner.Cache.Configuration.Expressions;
 using Sleipner.Cache.DictionaryCache;
+using Sleipner.Cache.MemcachedSharp;
 using Sleipner.Cache.MemcachedSharp.MemcachedWrapper;
 using SleipnerTestSite.Model.Contract;
 using SleipnerTestSite.Service;
@@ -29,7 +30,7 @@ namespace SleipnerTestSite.DependencyResolution {
     public static class IoC {
         public static IContainer Initialize()
         {
-            var proxy = new SleipnerCache<ICrapService>(new CrapService(), new DictionaryCacheProvider<ICrapService>());
+            var proxy = new SleipnerCache<ICrapService>(new CrapService(), new MemcachedProvider<ICrapService>(new[] { "localhost:11211" }));
 
             proxy.Config(a =>
             {
@@ -39,8 +40,8 @@ namespace SleipnerTestSite.DependencyResolution {
             ObjectFactory.Initialize(x =>
             {
                 x.For<ICrapService>().Singleton().Use(proxy.CreateCachedInstance());
-                x.For<IMemcachedSharpClient>().Singleton().Use(new MemcachedSharpClientCluster(new[] {"localhost:11211", "a70013.net.dr.dk:11211"}));
             });
+
             return ObjectFactory.Container;
         }
     }

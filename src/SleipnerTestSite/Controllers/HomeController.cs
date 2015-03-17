@@ -13,21 +13,15 @@ namespace SleipnerTestSite.Controllers
     public class HomeController : Controller
     {
         private readonly ICrapService _crapService;
-        private readonly IMemcachedSharpClient _client;
-
-        public HomeController(ICrapService crapService, IMemcachedSharpClient client)
+        
+        public HomeController(ICrapService crapService)
         {
             _crapService = crapService;
-            _client = client;
         }
 
         public async Task<ActionResult> Index()
         {
-            await _client.Get("blaaa");
-            await _client.Get("1234asf");
-
-
-            string data = null; //_crapService.GetCrap();
+            var data = await _crapService.GetCrapAsync();
             return Json(new { balls = data }, JsonRequestBehavior.AllowGet);
         }
     }

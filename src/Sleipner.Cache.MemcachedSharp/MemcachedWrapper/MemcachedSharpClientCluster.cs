@@ -127,6 +127,7 @@ namespace Sleipner.Cache.MemcachedSharp.MemcachedWrapper
             try
             {
                 await func(server);
+                return;
             }
             catch (PoolCreationException e)
             {
