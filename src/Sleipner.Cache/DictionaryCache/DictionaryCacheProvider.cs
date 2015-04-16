@@ -8,6 +8,7 @@ using Sleipner.Cache.Model;
 using Sleipner.Cache.Policies;
 using Sleipner.Core.Util;
 using Sleipner.Cache.Extensions;
+using System.Linq.Expressions;
 
 namespace Sleipner.Cache.DictionaryCache
 {
@@ -64,6 +65,16 @@ namespace Sleipner.Cache.DictionaryCache
                 var absoluteDuration = TimeSpan.FromSeconds(cachePolicy.MaxAge);
 
                 _cache[hash] = new DictionaryCacheItem(e, duration, absoluteDuration);
+            });
+        }
+
+        public async Task DeleteAsync<TResult>(Expression<Func<T, TResult>> expression)
+        {
+            await Task.Factory.StartNew(() =>
+            {
+                var invocation = ProxiedMethodInvocationGenerator<T>.FromExpression(expression);
+                var hash = invocation.GetHashString<T, TResult>();
+                _cache.Remove(hash);
             });
         }
     }

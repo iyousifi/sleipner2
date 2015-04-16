@@ -11,6 +11,7 @@ using Sleipner.Cache.MemcachedSharp.MemcachedWrapper.Hashing;
 using Sleipner.Cache.Model;
 using Sleipner.Cache.Policies;
 using Sleipner.Core.Util;
+using System.Linq.Expressions;
 
 namespace Sleipner.Cache.MemcachedSharp
 {
@@ -106,6 +107,13 @@ namespace Sleipner.Cache.MemcachedSharp
             {
                 await _cluster.Set(key, bytes);
             }
+        }
+
+        public async Task DeleteAsync<TResult>(Expression<Func<T, TResult>> expression)
+        {
+            var invocation = ProxiedMethodInvocationGenerator<T>.FromExpression(expression);
+            var key = invocation.GetHashString<T, TResult>();
+            await _cluster.Delete(key);
         }
 
         private byte[] SerializeAndZip<TResult>(MemcachedObject<TResult> item)

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Sleipner.Cache.Model;
 using Sleipner.Cache.Policies;
 using Sleipner.Core.Util;
+using System.Linq.Expressions;
 
 namespace Sleipner.Cache
 {
@@ -14,5 +15,6 @@ namespace Sleipner.Cache
         Task<CachedObject<TResult>> GetAsync<TResult>(ProxiedMethodInvocation<T, TResult> proxiedMethodInvocation, CachePolicy cachePolicy);
         Task StoreAsync<TResult>(ProxiedMethodInvocation<T, TResult> proxiedMethodInvocation, CachePolicy cachePolicy, TResult data);
         Task StoreExceptionAsync<TResult>(ProxiedMethodInvocation<T, TResult> proxiedMethodInvocation, CachePolicy cachePolicy, Exception e);
+        Task DeleteAsync<TResult>(Expression<Func<T, TResult>> expression);
     }
 }
