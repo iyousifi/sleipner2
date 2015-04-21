@@ -17,23 +17,22 @@ namespace Sleipner.Cache.MemcachedSharp
 {
     public class MemcachedProvider<T> : ICacheProvider<T> where T : class
     {
-        private MemcachedSharpClientCluster _cluster;
+        private readonly MemcachedSharpClientCluster _memcachedCluster;
         private JsonSerializer _serializer;
 
-        public MemcachedProvider(IEnumerable<string> endPoints, MemcachedOptions options = null)
+        public MemcachedProvider(MemcachedSharpClientCluster memcachedCluster)
         {
-            _cluster = new MemcachedSharpClientCluster(endPoints, options);
+            _memcachedCluster = memcachedCluster;
             _serializer = new JsonSerializer
             {
                 TypeNameHandling = TypeNameHandling.All
             };
-
         }
 
         public async Task<CachedObject<TResult>> GetAsync<TResult>(ProxiedMethodInvocation<T, TResult> proxiedMethodInvocation, CachePolicy cachePolicy)
         {
             var key = proxiedMethodInvocation.GetHashString();
-            var memcachedItem = await _cluster.Get(key);
+            var memcachedItem = await _memcachedCluster.Get(key);
             if (memcachedItem != null)
             {
                 MemcachedObject<TResult> cacheItem;
@@ -79,11 +78,11 @@ namespace Sleipner.Cache.MemcachedSharp
 
             if (cachePolicy.MaxAge > 0)
             {
-                await _cluster.Set(key, bytes, new MemcachedStorageOptions() {ExpirationTime = TimeSpan.FromSeconds(cachePolicy.MaxAge)});
+                await _memcachedCluster.Set(key, bytes, new MemcachedStorageOptions() { ExpirationTime = TimeSpan.FromSeconds(cachePolicy.MaxAge) });
             }
             else
             {
-                await _cluster.Set(key, bytes);
+                await _memcachedCluster.Set(key, bytes);
             }
         }
 
@@ -101,11 +100,11 @@ namespace Sleipner.Cache.MemcachedSharp
 
             if (cachePolicy.MaxAge > 0)
             {
-                await _cluster.Set(key, bytes, new MemcachedStorageOptions() { ExpirationTime = TimeSpan.FromSeconds(cachePolicy.MaxAge) });
+                await _memcachedCluster.Set(key, bytes, new MemcachedStorageOptions() { ExpirationTime = TimeSpan.FromSeconds(cachePolicy.MaxAge) });
             }
             else
             {
-                await _cluster.Set(key, bytes);
+                await _memcachedCluster.Set(key, bytes);
             }
         }
 
@@ -113,7 +112,7 @@ namespace Sleipner.Cache.MemcachedSharp
         {
             var invocation = ProxiedMethodInvocationGenerator<T>.FromExpression(expression);
             var key = invocation.GetHashString<T, TResult>();
-            await _cluster.Delete(key);
+            await _memcachedCluster.Delete(key);
         }
 
         private byte[] SerializeAndZip<TResult>(MemcachedObject<TResult> item)

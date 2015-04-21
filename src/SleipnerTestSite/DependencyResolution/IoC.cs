@@ -28,9 +28,11 @@ using StructureMap;
 using StructureMap.Graph;
 namespace SleipnerTestSite.DependencyResolution {
     public static class IoC {
+
         public static IContainer Initialize()
         {
-            var proxy = new SleipnerCache<ICrapService>(new CrapService(), new MemcachedProvider<ICrapService>(new[] { "localhost:11211" }));
+            var memcachedCluster = new MemcachedSharpClientCluster(new[] {"localhost:11211"});
+            var proxy = new SleipnerCache<ICrapService>(new CrapService(), new MemcachedProvider<ICrapService>(memcachedCluster));
 
             proxy.Config(a =>
             {
