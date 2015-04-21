@@ -49,5 +49,12 @@ namespace Sleipner.Cache.Configuration
 
             return this;
         }
+
+        public IMethodFamilyConfigurationExpression DiscardStale()
+        {
+            _policy.DiscardStale = true;
+
+            return this;
+        }
     }
 }

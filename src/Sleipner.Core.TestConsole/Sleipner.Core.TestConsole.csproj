@@ -38,6 +38,15 @@
     <Reference Include="Microsoft.CompilerServices.AsyncTargetingPack.Net45">
       <HintPath>..\packages\Microsoft.CompilerServices.AsyncTargetingPack.1.0.0\lib\net45\Microsoft.CompilerServices.AsyncTargetingPack.Net45.dll</HintPath>
     </Reference>
+    <Reference Include="Nito.AsyncEx">
+      <HintPath>..\packages\Nito.AsyncEx.3.0.0\lib\net45\Nito.AsyncEx.dll</HintPath>
+    </Reference>
+    <Reference Include="Nito.AsyncEx.Concurrent">
+      <HintPath>..\packages\Nito.AsyncEx.3.0.0\lib\net45\Nito.AsyncEx.Concurrent.dll</HintPath>
+    </Reference>
+    <Reference Include="Nito.AsyncEx.Enlightenment">
+      <HintPath>..\packages\Nito.AsyncEx.3.0.0\lib\net45\Nito.AsyncEx.Enlightenment.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -57,9 +66,25 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Sleipner.Cache.MemcachedSharp\Sleipner.Cache.MemcachedSharp.csproj">
+      <Project>{E573BC69-DB2F-45B2-84D3-41BC55547C65}</Project>
+      <Name>Sleipner.Cache.MemcachedSharp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sleipner.Cache\Sleipner.Cache.csproj">
+      <Project>{B9381A2D-20E3-4EE5-9748-47E145550154}</Project>
+      <Name>Sleipner.Cache</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Sleipner.Core\Sleipner.Core.csproj">
       <Project>{a7f6cd6f-df11-40b9-b4c3-1341fce4ae4d}</Project>
       <Name>Sleipner.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SleipnerTestSite.Model\SleipnerTestSite.Model.csproj">
+      <Project>{a0dc63e0-582a-4525-9c10-291e08554e27}</Project>
+      <Name>SleipnerTestSite.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SleipnerTestSite.Service\SleipnerTestSite.Service.csproj">
+      <Project>{c5287969-f140-4d1e-b252-ac82ce9ce057}</Project>
+      <Name>SleipnerTestSite.Service</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

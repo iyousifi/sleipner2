@@ -36,5 +36,7 @@
         /// </summary>
         /// <returns></returns>
         IMethodFamilyConfigurationExpression BubbleExceptionsWhenStale();
+
+        IMethodFamilyConfigurationExpression DiscardStale();
     }
 }

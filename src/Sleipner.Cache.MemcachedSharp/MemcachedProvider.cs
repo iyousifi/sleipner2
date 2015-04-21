@@ -33,6 +33,7 @@ namespace Sleipner.Cache.MemcachedSharp
         {
             var key = proxiedMethodInvocation.GetHashString();
             var memcachedItem = await _memcachedCluster.Get(key);
+
             if (memcachedItem != null)
             {
                 MemcachedObject<TResult> cacheItem;
@@ -59,6 +60,12 @@ namespace Sleipner.Cache.MemcachedSharp
 
                 var fresh = cacheItem.Created.AddSeconds(cachePolicy.CacheDuration) > DateTime.Now;
                 var state = fresh ? CachedObjectState.Fresh : CachedObjectState.Stale;
+
+                if (cachePolicy.DiscardStale)
+                {
+                    return new CachedObject<TResult>(CachedObjectState.None, default(TResult));
+                }
+
                 return new CachedObject<TResult>(state, cacheItem.Object);
             }
 
@@ -112,7 +119,7 @@ namespace Sleipner.Cache.MemcachedSharp
         {
             var invocation = ProxiedMethodInvocationGenerator<T>.FromExpression(expression);
             var key = invocation.GetHashString<T, TResult>();
-            await _memcachedCluster.Delete(key);
+            var result = await _memcachedCluster.Delete(key);
         }
 
         private byte[] SerializeAndZip<TResult>(MemcachedObject<TResult> item)

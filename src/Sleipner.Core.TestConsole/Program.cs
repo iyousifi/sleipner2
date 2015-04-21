@@ -4,7 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MemcachedSharp;
+using Nito.AsyncEx;
+using Sleipner.Cache;
+using Sleipner.Cache.Configuration.Expressions;
+using Sleipner.Cache.MemcachedSharp;
+using Sleipner.Cache.MemcachedSharp.MemcachedWrapper;
 using Sleipner.Core.Util;
+using SleipnerTestSite.Model.Contract;
+using SleipnerTestSite.Service;
 
 namespace Sleipner.Core.TestConsole
 {
@@ -12,36 +19,31 @@ namespace Sleipner.Core.TestConsole
     {
         static void Main(string[] args)
         {
-            /*var sleipnerProxy = new SleipnerProxy<ITestInterface>(new TestImplementation());
-            var kk = sleipnerProxy.WrapWith(new Handler());
+            AsyncContext.Run(() => MainAsync(args));
 
-            kk.GetStuff("sdss");*/
-        }
-    }
-
-    public class Handler : IProxyHandler<ITestInterface>
-    {
-        public Task<TResult> HandleAsync<TResult>(ProxiedMethodInvocation<ITestInterface, TResult> methodInvocation)
-        {
-            throw new NotImplementedException();
+            Console.ReadLine();
         }
 
-        public TResult Handle<TResult>(ProxiedMethodInvocation<ITestInterface, TResult> methodInvocation)
+        static async Task MainAsync(string[] args)
         {
-            throw new NotImplementedException();
-        }
-    }
+            var memcachedCluster = new MemcachedSharpClientCluster(new[] { "localhost:11211" });
+            var service = new CrapService();
+            var cacheProvider = new MemcachedProvider<ICrapService>(memcachedCluster);
+            var sleipnerProxy = new SleipnerCache<ICrapService>(service, cacheProvider);
 
-    public interface ITestInterface
-    {
-        T GetStuff<T>(T bla) where T : class;
-    }
+            sleipnerProxy.Config(a => a.DefaultIs().CacheFor(1).DiscardStale());
+            var cachedService = sleipnerProxy.CreateCachedInstance();
 
-    public class TestImplementation : ITestInterface
-    {
-        public T GetStuff<T>(T bla) where T : class
-        {
-            return bla;
+            while (true)
+            {
+                var i13 = await cachedService.GetCrapAsync();
+                
+                await cacheProvider.DeleteAsync(a => a.GetCrapAsync());
+
+                var i2 = await cachedService.GetCrapAsync();
+
+                Console.ReadLine();
+            }
         }
     }
 }
