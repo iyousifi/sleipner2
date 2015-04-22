@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sleipner.Core", "Sleipner.Core\Sleipner.Core.csproj", "{A7F6CD6F-DF11-40B9-B4C3-1341FCE4AE4D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sleipner.Core.Test", "Sleipner.Core.Test\Sleipner.Core.Test.csproj", "{2C4B73E8-D168-4DD5-B9B4-2A074A13602E}"
@@ -22,6 +24,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sleipner.Cache.MemcachedSharp", "Sleipner.Cache.MemcachedSharp\Sleipner.Cache.MemcachedSharp.csproj", "{E573BC69-DB2F-45B2-84D3-41BC55547C65}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sleipner.Cache.MemcachedSharp.Test", "Sleipner.Cache.MemcachedSharp.Test\Sleipner.Cache.MemcachedSharp.Test.csproj", "{6EB1C016-1024-4573-9A94-188059D0B77E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{68CFDFD0-F147-46B1-8C09-8A46E92D9C8C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,6 +73,10 @@ Global
 		{6EB1C016-1024-4573-9A94-188059D0B77E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6EB1C016-1024-4573-9A94-188059D0B77E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6EB1C016-1024-4573-9A94-188059D0B77E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68CFDFD0-F147-46B1-8C09-8A46E92D9C8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68CFDFD0-F147-46B1-8C09-8A46E92D9C8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68CFDFD0-F147-46B1-8C09-8A46E92D9C8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68CFDFD0-F147-46B1-8C09-8A46E92D9C8C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
