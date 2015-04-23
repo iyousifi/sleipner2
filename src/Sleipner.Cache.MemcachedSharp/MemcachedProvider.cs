@@ -61,7 +61,7 @@ namespace Sleipner.Cache.MemcachedSharp
                 var fresh = cacheItem.Created.AddSeconds(cachePolicy.CacheDuration) > DateTime.Now;
                 var state = fresh ? CachedObjectState.Fresh : CachedObjectState.Stale;
 
-                if (cachePolicy.DiscardStale)
+                if (cachePolicy.DiscardStale && state == CachedObjectState.Stale)
                 {
                     return new CachedObject<TResult>(CachedObjectState.None, default(TResult));
                 }
