@@ -18,11 +18,13 @@ namespace Sleipner.Cache.MemcachedSharp
     public class MemcachedProvider<T> : ICacheProvider<T> where T : class
     {
         private readonly MemcachedSharpClientCluster _memcachedCluster;
+        private readonly string _hashScramble;
         private JsonSerializer _serializer;
 
-        public MemcachedProvider(MemcachedSharpClientCluster memcachedCluster)
+        public MemcachedProvider(MemcachedSharpClientCluster memcachedCluster, string hashScramble = null)
         {
             _memcachedCluster = memcachedCluster;
+            _hashScramble = hashScramble;
             _serializer = new JsonSerializer
             {
                 TypeNameHandling = TypeNameHandling.All
@@ -31,7 +33,7 @@ namespace Sleipner.Cache.MemcachedSharp
 
         public async Task<CachedObject<TResult>> GetAsync<TResult>(ProxiedMethodInvocation<T, TResult> proxiedMethodInvocation, CachePolicy cachePolicy)
         {
-            var key = proxiedMethodInvocation.GetHashString();
+            var key = proxiedMethodInvocation.GetHashString(_hashScramble);
             var memcachedItem = await _memcachedCluster.Get(key);
 
             if (memcachedItem != null)
@@ -82,7 +84,7 @@ namespace Sleipner.Cache.MemcachedSharp
 
         public async Task StoreAsync<TResult>(ProxiedMethodInvocation<T, TResult> proxiedMethodInvocation, CachePolicy cachePolicy, TResult data)
         {
-            var key = proxiedMethodInvocation.GetHashString();
+            var key = proxiedMethodInvocation.GetHashString(_hashScramble);
             var cachedObject = new MemcachedObject<TResult>()
             {
                 Created = DateTime.Now,
@@ -103,7 +105,7 @@ namespace Sleipner.Cache.MemcachedSharp
 
         public async Task StoreExceptionAsync<TResult>(ProxiedMethodInvocation<T, TResult> proxiedMethodInvocation, CachePolicy cachePolicy, Exception e)
         {
-            var key = proxiedMethodInvocation.GetHashString();
+            var key = proxiedMethodInvocation.GetHashString(_hashScramble);
             var cachedObject = new MemcachedObject<TResult>()
             {
                 Created = DateTime.Now,
@@ -126,7 +128,7 @@ namespace Sleipner.Cache.MemcachedSharp
         public async Task DeleteAsync<TResult>(Expression<Func<T, TResult>> expression)
         {
             var invocation = ProxiedMethodInvocationGenerator<T>.FromExpression(expression);
-            var key = invocation.GetHashString<T, TResult>();
+            var key = invocation.GetHashString(_hashScramble);
             var result = await _memcachedCluster.Delete(key);
         }
 
