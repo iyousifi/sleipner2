@@ -42,7 +42,15 @@ namespace Sleipner.Cache.MemcachedSharp
                     using (var streamReader = new StreamReader(zipStream))
                     {
                         var textReader = new JsonTextReader(streamReader);
-                        cacheItem = _serializer.Deserialize<MemcachedObject<TResult>>(textReader);
+                        try
+                        {
+                            cacheItem = _serializer.Deserialize<MemcachedObject<TResult>>(textReader);
+                        }
+                        catch (JsonSerializationException)
+                        {
+                            //This exception occurs if whatever is in memcached is impossible to deserialize. It's a tricky case, but we'll have to report back that nothing is in there.
+                            return new CachedObject<TResult>(CachedObjectState.None, default(TResult));
+                        }
                     }
                 }
 
