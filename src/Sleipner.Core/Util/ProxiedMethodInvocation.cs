@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -11,7 +12,7 @@ namespace Sleipner.Core.Util
     {
         public readonly MethodInfo Method;
         public readonly object[] Parameters;
-        private static readonly IDictionary<MethodInfo, DelegateFactory.LateBoundMethod> _lateBoundMethodCache = new Dictionary<MethodInfo, DelegateFactory.LateBoundMethod>();
+        private static readonly IDictionary<MethodInfo, DelegateFactory.LateBoundMethod> _lateBoundMethodCache = new ConcurrentDictionary<MethodInfo, DelegateFactory.LateBoundMethod>();
 
         public ProxiedMethodInvocation(MethodInfo method, object[] parameters)
         {
