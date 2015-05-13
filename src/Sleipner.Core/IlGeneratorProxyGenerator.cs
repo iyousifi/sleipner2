@@ -69,8 +69,12 @@ namespace Sleipner.Core
             cTorBody.Emit(OpCodes.Stfld, handlerField);             //Store parameter refrence in handlerField
 
             cTorBody.Emit(OpCodes.Ret);                             //Return
-            foreach (var method in interfaceType.GetMethods())
+
+
+            var methods = interfaceType.GetMethods();
+            for (var methodIndex = 0; methodIndex < methods.Length; methodIndex++)
             {
+                var method = methods[methodIndex];
                 var parameterTypes = method.GetParameters().Select(a => a.ParameterType).ToArray();
                 var proxyMethod = proxyBuilder.DefineMethod(
                     method.Name,
@@ -94,7 +98,6 @@ namespace Sleipner.Core
                     }
                 }
 
-                var methodIndex = interfaceType.GetMethods().ToList().IndexOf(method);
                 var methodBody = proxyMethod.GetILGenerator();
 
                 if (method.ReturnType == typeof(void) || (typeof(Task).IsAssignableFrom(method.ReturnType) && !method.ReturnType.IsGenericType))
