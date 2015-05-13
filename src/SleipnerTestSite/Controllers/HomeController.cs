@@ -21,7 +21,7 @@ namespace SleipnerTestSite.Controllers
 
         public async Task<ActionResult> Index()
         {
-            var data = await _crapService.GetCrapAsync();
+            var data = await _crapService.GetCrapAsync("", 1);
             return Json(new { balls = data }, JsonRequestBehavior.AllowGet);
         }
     }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using MemcachedSharp;
@@ -34,16 +35,16 @@ namespace Sleipner.Core.TestConsole
             sleipnerProxy.Config(a => a.DefaultIs().CacheFor(1).DiscardStale());
             var cachedService = sleipnerProxy.CreateCachedInstance();
 
-            while (true)
+            /*while (true)
             {
-                var i13 = await cachedService.GetCrapAsync();
-                
-                await cacheProvider.DeleteAsync(a => a.GetCrapAsync());
+                var i13 = await cachedService.GetCrapAsync("", 1);
 
-                var i2 = await cachedService.GetCrapAsync();
+                await cacheProvider.DeleteAsync(a => a.GetCrapAsync("", 1));
+
+                var i2 = await cachedService.GetCrapAsync("", 1);
 
                 Console.ReadLine();
-            }
+            }*/
         }
     }
 }

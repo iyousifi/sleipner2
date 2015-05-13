@@ -26,7 +26,8 @@ namespace Sleipner.Core.Test
             var sleipner = new SleipnerProxy<ITestInterface>(implementationMock.Object);
             var proxiedObject = sleipner.WrapWith(handlerMock.Object);
 
-            proxiedObject.AddNumbers(1, 2);
+            var result = proxiedObject.AddNumbers(1, 2);
+            Assert.AreEqual(3, result);
         }
 
         [Test]
@@ -56,27 +57,12 @@ namespace Sleipner.Core.Test
             var sleipner = new SleipnerProxy<ITestInterface>(implementationMock.Object);
             var proxiedObject = sleipner.WrapWith(handlerMock.Object);
 
-            await proxiedObject.AddNumbersAsync(1, 2);
+            var result = await proxiedObject.AddNumbersAsync(1, 2);
+            Assert.AreEqual(3, result);
         }
 
         [Test]
-        public void TestGenericMethod()
-        {
-            var implementationMock = new Mock<ITestInterface>(MockBehavior.Strict);
-            implementationMock.Setup(a => a.GetStuff("rofl")).Returns("mao");
-
-            var handlerMock = new Mock<IProxyHandler<ITestInterface>>(MockBehavior.Strict);
-            var proxiedMethodInvocation = ProxiedMethodInvocationGenerator<ITestInterface>.FromExpression(a => a.GetStuff("rofl"));
-            handlerMock.Setup(a => a.Handle(proxiedMethodInvocation)).Returns(proxiedMethodInvocation.Invoke(implementationMock.Object));
-
-            var sleipner = new SleipnerProxy<ITestInterface>(implementationMock.Object);
-            var proxiedObject = sleipner.WrapWith(handlerMock.Object);
-
-            proxiedObject.GetStuff("rofl");
-        }
-
-        [Test]
-        [ExpectedException(typeof(SleipnerGenericParameterMustBeReferenceException))]
+        [ExpectedException(typeof(SleipnerGenericMethodsNotSupportedException))]
         public void TestInvalidInterface()
         {
             var implementationMock = new Mock<IInvalidInterface>(MockBehavior.Strict);

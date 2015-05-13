@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using SleipnerTestSite.Model;
@@ -10,7 +12,7 @@ namespace SleipnerTestSite.Service
 {
     public class CrapService : ICrapService
     {
-        public async Task<IEnumerable<Crap>> GetCrapAsync()
+        public async Task<IEnumerable<Crap>> GetCrapAsync(string bla, int rofl)
         {
             return await Task.Factory.StartNew(() => new[]
             {

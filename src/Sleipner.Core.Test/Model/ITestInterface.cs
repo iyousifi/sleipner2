@@ -11,8 +11,5 @@ namespace Sleipner.Core.Test.Model
         void PassthroughMethod(int a, string b);
         int AddNumbers(int a, int b);
         Task<int> AddNumbersAsync(int a, int b);
-
-        T GetStuff<T>(T bla) where T : class;
-        Task<T> GetStuffAsync<T>(T bla) where T : class;
     }
 }

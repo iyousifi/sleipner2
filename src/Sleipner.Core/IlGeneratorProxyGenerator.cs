@@ -85,6 +85,8 @@ namespace Sleipner.Core
 
                 if (method.IsGenericMethod)
                 {
+                    throw new SleipnerGenericMethodsNotSupportedException();
+
                     var genericTypes = method.GetGenericArguments();
                     var parameters = proxyMethod.DefineGenericParameters(genericTypes.Select(a => a.Name).ToArray());
                     for (var i = 0; i < genericTypes.Length; i++)
@@ -118,11 +120,29 @@ namespace Sleipner.Core
                 /* Load the methodinfo of the current method into a local variable */
 
                 var methodInfoLocal = methodBody.DeclareLocal(typeof(MethodInfo));
-                methodBody.Emit(OpCodes.Ldtoken, typeof(TInterface));                                            //typeof(T)
-                methodBody.Emit(OpCodes.Call, typeof(Type).GetMethod("GetTypeFromHandle"));             //typeof(T) NOTICE USE OF CALL INSTEAD OF CALLVIRT
-                methodBody.Emit(OpCodes.Callvirt, typeof(Type).GetMethod("GetMethods", new Type[0]));   //.GetMethods(new Type[0])
-                methodBody.Emit(OpCodes.Ldc_I4, methodIndex);                                           //Read Array Index x
-                methodBody.Emit(OpCodes.Ldelem, typeof(MethodInfo));                                    //As an methodinfo
+                var methodParameters = method.GetParameters();
+
+                var methodParametersArray = methodBody.DeclareLocal(typeof (Type[]));
+                methodBody.Emit(OpCodes.Ldc_I4, methodParameters.Length);
+                methodBody.Emit(OpCodes.Newarr, typeof(Type));
+                methodBody.Emit(OpCodes.Stloc, methodParametersArray);
+
+                for (var p = 0; p < methodParameters.Length; p++)
+                {
+                    var currentParameter = methodParameters[p];
+                    methodBody.Emit(OpCodes.Ldloc, methodParametersArray);
+                    methodBody.Emit(OpCodes.Ldc_I4, p);
+                    methodBody.Emit(OpCodes.Ldtoken, currentParameter.ParameterType);
+                    methodBody.Emit(OpCodes.Call, typeof(Type).GetMethod("GetTypeFromHandle"));
+                    methodBody.Emit(OpCodes.Stelem_Ref);
+                }
+
+                methodBody.Emit(OpCodes.Ldtoken, interfaceType);
+                methodBody.Emit(OpCodes.Call, typeof(Type).GetMethod("GetTypeFromHandle"));
+                methodBody.Emit(OpCodes.Ldstr, method.Name);
+                methodBody.Emit(OpCodes.Ldloc, methodParametersArray);
+                methodBody.Emit(OpCodes.Callvirt, typeof(Type).GetMethod("GetMethod", new []{typeof(string), typeof(Type[])}));
+
                 if (method.IsGenericMethod)
                 {
                     var genericTypes = method.GetGenericArguments();
