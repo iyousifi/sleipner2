@@ -50,7 +50,7 @@ namespace Sleipner.Cache.LookupHandlers.Async
                 if (cachedItem.State == CachedObjectState.Stale)
                     return cachedItem.Object;
 
-                //return await awaitableTask;
+                return await awaitableTask;
             }
 
             
