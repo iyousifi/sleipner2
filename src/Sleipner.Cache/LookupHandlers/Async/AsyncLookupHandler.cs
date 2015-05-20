@@ -53,43 +53,37 @@ namespace Sleipner.Cache.LookupHandlers.Async
                 return await awaitableTask;
             }
 
-            
             if (cachedItem.State == CachedObjectState.Stale)
             {
-                awaitableTask.ContinueWith(async task =>
+                try
                 {
+                    Exception thrownException = null;
                     try
                     {
-                        Exception thrownException = null;
-                        try
-                        {
-                            var data = await task;
-                            await _cache.StoreAsync(methodInvocation, cachePolicy, data);
-                        }
-                        catch (Exception e)
-                        {
-                            thrownException = e;
-                        }
-
-                        if (thrownException != null)
-                        {
-                            if (cachePolicy.BubbleExceptions)
-                            {
-                                await _cache.StoreExceptionAsync(methodInvocation, cachePolicy, thrownException);
-                            }
-                            else
-                            {
-                                await _cache.StoreAsync(methodInvocation, cachePolicy, cachedItem.Object);
-                            }
-                        }
+                        var data = await awaitableTask;
+                        await _cache.StoreAsync(methodInvocation, cachePolicy, data);
+                        return data;
                     }
-                    finally
+                    catch (Exception e)
                     {
-                        _taskSyncronizer.Release(requestKey);
+                        thrownException = e;
                     }
-                });
 
-                return cachedItem.Object;
+                    if (cachePolicy.BubbleExceptions)
+                    {
+                        await _cache.StoreExceptionAsync(methodInvocation, cachePolicy, thrownException);
+                        throw thrownException;
+                    }
+                    else
+                    {
+                        await _cache.StoreAsync(methodInvocation, cachePolicy, cachedItem.Object);
+                        return cachedItem.Object;
+                    }
+                }
+                finally
+                {
+                    _taskSyncronizer.Release(requestKey);
+                }
             }
 
             try
