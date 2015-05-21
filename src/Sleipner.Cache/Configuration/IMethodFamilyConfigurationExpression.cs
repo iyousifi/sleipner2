@@ -11,6 +11,14 @@
         IMethodFamilyConfigurationExpression CacheFor(int duration);
 
         /// <summary>
+        /// Configures policy to cache any exception thrown by this method for the specified period (seconds)
+        /// The default is zero (disabled)
+        /// </summary>
+        /// <param name="duration"></param>
+        /// <returns></returns>
+        IMethodFamilyConfigurationExpression CacheExceptionsFor(int duration);
+
+        /// <summary>
         /// The maximum age the object can have in cache before it is considered unusable. Must be larger than duration specified in CacheFor
         /// </summary>
         /// <param name="maxDuration"></param>

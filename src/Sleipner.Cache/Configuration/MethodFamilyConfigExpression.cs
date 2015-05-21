@@ -19,6 +19,13 @@ namespace Sleipner.Cache.Configuration
             return this;
         }
 
+        public IMethodFamilyConfigurationExpression CacheExceptionsFor(int duration)
+        {
+            _policy.ExceptionCacheDuration = duration;
+
+            return this;
+        }
+
         public IMethodFamilyConfigurationExpression ExpireAfter(int maxDuration)
         {
             if(maxDuration <= _policy.CacheDuration)
