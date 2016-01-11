@@ -150,9 +150,10 @@ namespace Sleipner.Cache.Test.Async
             }
 
             await Task.WhenAll(tasks);
+            Assert.IsTrue(cacheStoreTask.Wait(5000), "Store action on cache did not appear to have been called");
+
             Assert.IsTrue(tasks.All(a => a.Result == cachedValue));
             implementation.Verify(a => a.AddNumbersAsync(1, 2), Times.Once);
-            Assert.IsTrue(cacheStoreTask.Wait(5000), "Store action on cache did not appear to have been called");
             cache.Verify(a => a.StoreAsync(invocation, cachePolicy, implReturnValue), Times.Once);
         }
     }

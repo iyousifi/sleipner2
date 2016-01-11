@@ -9,7 +9,7 @@ namespace Sleipner.Cache.LookupHandlers.Async
     {
         private readonly IDictionary<RequestKey, object> _waitHandles = new ConcurrentDictionary<RequestKey, object>();
 
-        public bool TryGetAwaitable<TResult>(RequestKey key, Func<Task<TResult>> loaderTask, out Task<TResult> awaitable)
+        public bool TryGetAwaitable<TResult>(RequestKey key, Task<TResult> loaderTask, out Task<TResult> awaitable)
         {
             object awaitableTask;
             if (_waitHandles.TryGetValue(key, out awaitableTask))
@@ -19,7 +19,8 @@ namespace Sleipner.Cache.LookupHandlers.Async
             }
             else
             {
-                awaitable = loaderTask();
+                //_waitHandles[key] = new {};
+                awaitable = loaderTask;
                 _waitHandles[key] = awaitable;
                 return false;
             }
