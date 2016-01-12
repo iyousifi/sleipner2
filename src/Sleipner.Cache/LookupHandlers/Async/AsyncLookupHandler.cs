@@ -111,9 +111,9 @@ namespace Sleipner.Cache.LookupHandlers.Async
             {
                 try
                 {
-                    var data = await methodInvocation.InvokeAsync(_implementation); ;
-                    await _cache.StoreAsync(methodInvocation, cachePolicy, data);
-                    return data;
+                    realInstanceResult = await methodInvocation.InvokeAsync(_implementation); ;
+                    await _cache.StoreAsync(methodInvocation, cachePolicy, realInstanceResult);
+                    return realInstanceResult;
                 }
                 catch (Exception e)
                 {

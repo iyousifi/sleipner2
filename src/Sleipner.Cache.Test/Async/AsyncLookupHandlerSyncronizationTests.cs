@@ -37,17 +37,22 @@ namespace Sleipner.Cache.Test.Async
             cache.Setup(a => a.GetAsync(invocation, cachePolicy)).ReturnsAsync(cachedObject);
 
             var cacheStoreTask = new Task(() => { });
-            cache.Setup(a => a.StoreAsync(invocation, cachePolicy, implReturnValue)).Returns(() =>
-            {
-                cacheStoreTask.Start();
-                return cacheStoreTask;
-            });
+            cache.Setup(a => a.StoreAsync(invocation, cachePolicy, implReturnValue)).Returns(() => cacheStoreTask);
 
             const int taskCount = 10;
             var tasks = new Task<int>[taskCount];
             for (var i = 0; i < taskCount; i++)
             {
-                tasks[i] = lookupHandler.LookupAsync(invocation);
+                var idx = i;
+                tasks[idx] = Task.Run(async () =>
+                {
+                    if (idx == (taskCount - 1))
+                    {
+                        cacheStoreTask.Start();
+                    }
+                    var task = await lookupHandler.LookupAsync(invocation);
+                    return task;
+                });
             }
 
             await Task.WhenAll(tasks);
@@ -84,8 +89,6 @@ namespace Sleipner.Cache.Test.Async
             });
             cache.Setup(a => a.StoreExceptionAsync(invocation, cachePolicy, thrownException)).Returns(() =>
             {
-                cacheStoreTask.Start();
-                
                 return cacheStoreTask;
             });
 
@@ -93,7 +96,16 @@ namespace Sleipner.Cache.Test.Async
             var tasks = new Task<int>[taskCount];
             for (var i = 0; i < taskCount; i++)
             {
-                tasks[i] = lookupHandler.LookupAsync(invocation);
+                var idx = i;
+                tasks[idx] = Task.Run(async () =>
+                {
+                    if (idx == (taskCount - 1))
+                    {
+                        cacheStoreTask.Start();
+                    }
+                    var task = await lookupHandler.LookupAsync(invocation);
+                    return task;
+                });
             }
 
             foreach (var t in tasks)
@@ -136,23 +148,29 @@ namespace Sleipner.Cache.Test.Async
             cache.Setup(a => a.GetAsync(invocation, cachePolicy)).ReturnsAsync(cachedObject);
 
             var cacheStoreTask = new Task(() => { });
-            cache.Setup(a => a.StoreAsync(invocation, cachePolicy, implReturnValue)).Returns(() =>
-            {
-                cacheStoreTask.Start();
-                return cacheStoreTask;
-            });
+            cache.Setup(a => a.StoreAsync(invocation, cachePolicy, implReturnValue)).Returns(() => cacheStoreTask);
 
             const int taskCount = 10;
             var tasks = new Task<int>[taskCount];
             for (var i = 0; i < taskCount; i++)
             {
-                tasks[i] = lookupHandler.LookupAsync(invocation);
+                var idx = i;
+                tasks[idx] = Task.Run(async () =>
+                {
+                    if (idx == (taskCount - 1))
+                    {
+                        cacheStoreTask.Start();
+                    }
+                    var task = await lookupHandler.LookupAsync(invocation);
+                    return task;
+                });
             }
 
             await Task.WhenAll(tasks);
             Assert.IsTrue(cacheStoreTask.Wait(5000), "Store action on cache did not appear to have been called");
 
             Assert.IsTrue(tasks.All(a => a.Result == cachedValue));
+            Thread.Sleep(100);
             implementation.Verify(a => a.AddNumbersAsync(1, 2), Times.Once);
             cache.Verify(a => a.StoreAsync(invocation, cachePolicy, implReturnValue), Times.Once);
         }
