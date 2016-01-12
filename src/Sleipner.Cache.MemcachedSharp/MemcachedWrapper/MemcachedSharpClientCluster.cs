@@ -55,7 +55,7 @@ namespace Sleipner.Cache.MemcachedSharp.MemcachedWrapper
             MemcachedSharpClient server;
             if (_nodes.TryGetNode(key, out server))
             {
-                Debug.WriteLine("Selected server: " + server.EndPoint);
+                //Debug.WriteLine("Selected server: " + server.EndPoint);
                 if (!server.IsAlive)
                 {
                     Debug.WriteLine("Server: " + server.EndPoint + " is dead. Selecting the next one");
