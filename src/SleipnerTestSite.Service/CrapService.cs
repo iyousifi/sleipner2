@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using SleipnerTestSite.Model;
 using SleipnerTestSite.Model.Contract;
@@ -44,6 +45,19 @@ namespace SleipnerTestSite.Service
                     Name = "Mega crap"
                 }
             };
+        }
+
+        public async Task<Crap> GetEvenMoreCrap(int crapId)
+        {
+            Thread.Sleep(2000);
+            return await Task.Factory.StartNew(() =>
+
+                new Crap()
+                {
+                    CrapID = 1337,
+                    Name = "Ultra crap"
+                }
+        );
         }
     }
 }
