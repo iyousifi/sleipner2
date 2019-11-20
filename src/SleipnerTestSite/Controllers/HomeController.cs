@@ -23,6 +23,13 @@ namespace SleipnerTestSite.Controllers
         {
             var data = await _crapService.GetCrapAsync("", 1);
             return Json(new { balls = data }, JsonRequestBehavior.AllowGet);
+        } 
+
+        public async Task<ActionResult> MoreCrap(int id)
+        {
+            var data = await _crapService.GetEvenMoreCrap(id);
+            return Json(new { balls = data }, JsonRequestBehavior.AllowGet);
         }
+       
     }
 }

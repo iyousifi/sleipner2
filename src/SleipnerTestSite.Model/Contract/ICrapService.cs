@@ -7,5 +7,6 @@ namespace SleipnerTestSite.Model.Contract
     {
         Task<IEnumerable<Crap>> GetCrapAsync(string bla, int rofl);
         IEnumerable<Crap> GetCrap();
+        Task<Crap> GetEvenMoreCrap(int crapId);
     }
 }

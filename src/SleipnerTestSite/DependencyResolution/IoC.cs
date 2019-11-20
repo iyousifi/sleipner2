@@ -16,14 +16,19 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
+using System.Net;
 using MemcachedSharp;
 using Sleipner.Cache;
+using Sleipner.Cache.Configuration;
 using Sleipner.Cache.Configuration.Expressions;
 using Sleipner.Cache.DictionaryCache;
 using Sleipner.Cache.MemcachedSharp;
 using Sleipner.Cache.MemcachedSharp.MemcachedWrapper;
+using Sleipner.Cache.RedisSharp;
+using Sleipner.Cache.RedisSharp.RedisWrapper;
 using SleipnerTestSite.Model.Contract;
 using SleipnerTestSite.Service;
+using StackExchange.Redis;
 using StructureMap;
 using StructureMap.Graph;
 namespace SleipnerTestSite.DependencyResolution {
@@ -31,12 +36,16 @@ namespace SleipnerTestSite.DependencyResolution {
 
         public static IContainer Initialize()
         {
-            var memcachedCluster = new MemcachedSharpClientCluster(new[] {"localhost:11211"});
-            var proxy = new SleipnerCache<ICrapService>(new CrapService(), new MemcachedProvider<ICrapService>(memcachedCluster));
+
+            var options = new ConfigurationOptions { EndPoints = { new DnsEndPoint("dlhack03.ts1.local", 6379) }};
+
+            var redisClient = new RedisClient(options);
+            var proxy = new SleipnerCache<ICrapService>(new CrapService(), new RedisProvider<ICrapService>(redisClient));
 
             proxy.Config(a =>
             {
                 a.DefaultIs().CacheFor(10);
+                a.For(x => x.GetEvenMoreCrap(Param.IsAny<int>())).CacheFor(120);
             });
 
             ObjectFactory.Initialize(x =>

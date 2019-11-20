@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29424.173
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sleipner.Core", "Sleipner.Core\Sleipner.Core.csproj", "{A7F6CD6F-DF11-40B9-B4C3-1341FCE4AE4D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sleipner.Core.Test", "Sleipner.Core.Test\Sleipner.Core.Test.csproj", "{2C4B73E8-D168-4DD5-B9B4-2A074A13602E}"
@@ -22,6 +24,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sleipner.Cache.MemcachedSharp", "Sleipner.Cache.MemcachedSharp\Sleipner.Cache.MemcachedSharp.csproj", "{E573BC69-DB2F-45B2-84D3-41BC55547C65}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sleipner.Cache.MemcachedSharp.Test", "Sleipner.Cache.MemcachedSharp.Test\Sleipner.Cache.MemcachedSharp.Test.csproj", "{6EB1C016-1024-4573-9A94-188059D0B77E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sleipner.Cache.RedisSharp", "Sleipner.Cache.RedisSharp\Sleipner.Cache.RedisSharp.csproj", "{35BD501D-3AA9-4DE7-9CA8-358B1276EFD7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,6 +73,10 @@ Global
 		{6EB1C016-1024-4573-9A94-188059D0B77E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6EB1C016-1024-4573-9A94-188059D0B77E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6EB1C016-1024-4573-9A94-188059D0B77E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35BD501D-3AA9-4DE7-9CA8-358B1276EFD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35BD501D-3AA9-4DE7-9CA8-358B1276EFD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35BD501D-3AA9-4DE7-9CA8-358B1276EFD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35BD501D-3AA9-4DE7-9CA8-358B1276EFD7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -78,5 +86,8 @@ Global
 		{BD8B388E-75E3-43C4-B6A8-8961E696B708} = {23B79152-5788-434F-BD40-287E5390EB8D}
 		{A0DC63E0-582A-4525-9C10-291E08554E27} = {23B79152-5788-434F-BD40-287E5390EB8D}
 		{C5287969-F140-4D1E-B252-AC82CE9CE057} = {23B79152-5788-434F-BD40-287E5390EB8D}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1071D9DC-EE0A-41DF-AF50-18773D895C37}
 	EndGlobalSection
 EndGlobal
